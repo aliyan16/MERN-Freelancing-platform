@@ -1,12 +1,11 @@
 import jwt from 'jsonwebtoken'
 import { Request,Response,NextFunction } from 'express'
-import { error } from 'console';
 
 export interface AuthRequest extends Request{
     user?:any;
 }
 
-export const authenticate=(req:AuthRequest,res:Response,next:NextFunction){
+export const authenticate=(req:AuthRequest,res:Response,next:NextFunction)=>{
     const token=req.header('Authorization')?.replace('Bearer','')
     if(!token){
         return res.status(401).json({message:'No token'})
