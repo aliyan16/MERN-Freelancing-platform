@@ -1,19 +1,34 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { login } from "../slices/authSlice";
 
 function SignIn() {
   const navigate=useNavigate()
+  const dispatch=useDispatch()
   const [signInData,setSignInData]=useState({
     email:'',
     password:''
   })
 
-  const handleChange=async()=>{
-    
+  const handleChange=async(e:React.ChangeEvent<HTMLInputElement>)=>{
+    const {name,value}=e.target
+    setSignInData(prev=>({...prev,[name]:value}))
   }
 
-  const handleSubmit=async()=>{
+  const handleSubmit=async(e:React.FormEvent)=>{
+    e.preventDefault()
+    try{
+      const mockresponse={
+        user:{id:'123',name:'John Doe',role:'user'},
+        token:''
+      }
+      dispatch(login(mockresponse))
+      navigate('/dashboard')
+    }catch(err){
+      console.error('Error signing in:', err)
+    }
     
   }
   return (

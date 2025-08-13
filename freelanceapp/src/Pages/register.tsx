@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
-
+import { useDispatch } from "react-redux";
+import { login } from "../slices/authSlice";
+import { useNavigate } from "react-router-dom";
 function Register() {
+  const dispatch=useDispatch()
+  const navigate=useNavigate()
   const [RegisterData,setRegisterData]=useState({
     firstName:'',
     lastName:'',
@@ -11,15 +15,26 @@ function Register() {
     gender:''
   })
 
-  const handleChange=async()=>{
-    
+  const handleChange=async(e:React.ChangeEvent<HTMLInputElement>)=>{
+    const {name,value}=e.target
+    setRegisterData(prev=>({...prev,[name]:value}))
   }
 
 
 
-  const handleSubmit=async()=>{
-    
-
+  const handleSubmit=async(e:React.FormEvent)=>{
+    e.preventDefault()
+    try{
+      const mockresponse={
+        user:{id:'123',name:'John Doe',role:'user'},
+        token:''
+      }
+      dispatch(login(mockresponse))
+      navigate('/dashboard')
+      
+    }catch(e){
+      console.error('Error while registering user: ',e)
+    }
   }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">

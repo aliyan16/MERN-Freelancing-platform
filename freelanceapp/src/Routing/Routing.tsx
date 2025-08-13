@@ -6,7 +6,7 @@ import SignIn from "../Pages/login";
 import Register from "../Pages/register";
 import Onboarding from "../Pages/onboarding";
 import PrivateRoute from "./privateRoutes";
-
+import Dashboard from "../Pages/dashboard";
 
 function Routing(){
     return(
@@ -14,6 +14,7 @@ function Routing(){
                 <Route path="/auth/login" element={<SignIn />} />
                 <Route path="/auth/register" element={<Register />} />
                 <Route path="/onboarding" element={ <PrivateRoute><Onboarding /></PrivateRoute>} />
+                <Route path="/dashboard" element={<PrivateRoute><Dashboard/></PrivateRoute>}/>
             </Routes>
     )
 }
