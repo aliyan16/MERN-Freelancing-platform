@@ -84,6 +84,13 @@ function Register() {
             onChange={handleChange}
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+          <select className="border p-2 rounded w-full">
+            <option value="" disabled selected>
+              Select Role
+            </option>
+            <option>Seller</option>
+            <option>Buyer</option>
+          </select>
 
           <button
             type="submit"
