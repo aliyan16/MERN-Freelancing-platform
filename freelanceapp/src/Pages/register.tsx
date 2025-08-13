@@ -16,7 +16,7 @@ function Register() {
     role:''
   })
 
-  const handleChange=async(e:React.ChangeEvent<HTMLInputElement>)=>{
+  const handleChange=async(e:React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>)=>{
     const {name,value}=e.target
     setRegisterData(prev=>({...prev,[name]:value}))
   }
@@ -45,7 +45,7 @@ function Register() {
               placeholder="First Name"
               name="firstName"
               value={RegisterData.firstName}
-              onChange={()=>handleChange}
+              onChange={(e)=>handleChange(e)}
               className="w-1/2 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <input
@@ -53,7 +53,7 @@ function Register() {
               placeholder="Last Name"
               name="lastName"
               value={RegisterData.lastName}
-              onChange={()=>handleChange}
+              onChange={(e)=>handleChange(e)}
               className="w-1/2 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -63,7 +63,7 @@ function Register() {
             placeholder="Email"
             name="email"
             value={RegisterData.email}
-            onChange={()=>handleChange}
+            onChange={(e)=>handleChange(e)}
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
 
@@ -72,7 +72,7 @@ function Register() {
             placeholder="Password"
             name="password"
             value={RegisterData.password}
-            onChange={()=>handleChange}
+            onChange={(e)=>handleChange(e)}
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
 
@@ -80,7 +80,7 @@ function Register() {
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             name="gender"
             value={RegisterData.gender}
-            onChange={()=>handleChange}
+            onChange={handleChange}
           >
             <option value="" disabled>
               Select Gender
@@ -94,10 +94,10 @@ function Register() {
             type="date"
             name="dob"
             value={RegisterData.dob}
-            onChange={()=>handleChange}
+            onChange={handleChange}
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <select className="border p-2 rounded w-full" name="role" value={RegisterData.role} onChange={()=>handleChange}>
+          <select className="border p-2 rounded w-full" name="role" value={RegisterData.role} onChange={handleChange}>
             <option value="" disabled selected>
               Select Role
             </option>

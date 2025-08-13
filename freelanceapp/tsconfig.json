@@ -1,26 +1,24 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
+    /* Base Settings */
+    "target": "es2020",
+    "module": "commonjs",        // Node.js uses CommonJS
+    "outDir": "./dist",         // Where to emit JS files
+    "rootDir": "./src",         // Source directory
     "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx"
+
+    /* Frontend-Only (React) */
+    "jsx": "react-jsx",         // Keep for .tsx files
+    "lib": ["dom", "dom.iterable", "esnext"],  // Browser APIs
+
+    /* Backend-Only (Node.js) */
+    "types": ["node"],          // Include Node.js types
+    "moduleResolution": "node", // Standard for Node.js
+    "resolveJsonModule": true   // For JSON imports
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }

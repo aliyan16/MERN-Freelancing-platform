@@ -1,7 +1,20 @@
 import mongoose from "mongoose"
+import dotenv from 'dotenv'
+
+dotenv.config()
 const connectDB=async()=>{
     try{
-        await mongoose.connect(process.env.MONGO_URL as string)
+        console.log("Attempting to connect to:", process.env.MONGO_URL?.substring(0, 25) + "...");
+
+        if (!process.env.MONGO_URL) {
+
+            throw new Error("MongoDB connection string is missing!");
+        }
+
+        await mongoose.connect(process.env.MONGO_URL, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        } as mongoose.ConnectOptions);
         console.log('Mongo connected')
     }catch(e){
 
