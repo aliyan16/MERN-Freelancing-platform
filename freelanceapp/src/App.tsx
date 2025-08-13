@@ -1,11 +1,12 @@
 import React from 'react';
 import './App.css';
-
+import { BrowserRouter as Router } from 'react-router-dom';
+import Routing from './Routing/Routing';
 function App() {
   return (
-    <div className="App">
-      <h1>Hi</h1>
-    </div>
+    <Router>
+      <Routing />
+    </Router>
   );
 }
 
