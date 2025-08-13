@@ -54,3 +54,5 @@ const loginUser=async(req:Request,res:Response)=>{
         res.status(500).json({message:"Error while logging in"})
     }
 }
+
+export { registerUser, loginUser }
