@@ -20,11 +20,8 @@ function SignIn() {
   const handleSubmit=async(e:React.FormEvent)=>{
     e.preventDefault()
     try{
-      const mockresponse={
-        user:{id:'123',name:'John Doe',role:'user'},
-        token:''
-      }
-      dispatch(login(mockresponse))
+      const {data}=await axios.post('http://localhost:5000/api/auth/login',signInData)
+      dispatch(login(data))
       navigate('/dashboard')
     }catch(err){
       console.error('Error signing in:', err)
