@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../appstore/store'
 import { Link } from 'react-router-dom'
 
-function dashboard() {
+function Dashboard() {
   const user=useSelector((state:RootState)=>state.auth.user)
 
   return (
@@ -15,7 +15,7 @@ function dashboard() {
       <p className='mt-2 text-gray-600'>
         Welcome, {user?.name}
       </p>
-      {user?.role==='seller' && (
+      {user?.role==='Seller' && (
         <div className='mt-6'>
           <Link to='/gigs' className='bg-green-600 text-white px-4 py-2 rounded-lg'>
             View Your Gigs
@@ -24,7 +24,7 @@ function dashboard() {
         </div>
 
       )}
-      {user?.role==='buyer' && (
+      {user?.role==='Buyer' && (
         <div className='mt-6'>
           <Link to='/orders' className='bg-blue-600 text-white px-4 py-2 rounded-lg'>
             View Your Orders
@@ -37,4 +37,4 @@ function dashboard() {
   )
 }
 
-export default dashboard
+export default Dashboard
