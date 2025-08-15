@@ -1,8 +1,8 @@
 import {createSlice,createAsyncThunk} from '@reduxjs/toolkit'
 import axios from 'axios'
 
-const fetchSellerGigs=createAsyncThunk('gigs/fetchSeller',async()=>{
-    const {data}=await axios.get('http://localhost:5000/api/gigs/seller')
+const fetchSellerGigs=createAsyncThunk('gigs/fetchSellerGigs',async()=>{
+    const {data}=await axios.get('http://localhost:5000/api/gigs')
     return data
 })
 

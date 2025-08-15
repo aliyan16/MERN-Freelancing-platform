@@ -9,6 +9,7 @@ import PrivateRoute from "./privateRoutes";
 import Dashboard from "../Pages/dashboard";
 import Profile from "../Pages/profile";
 import GigsPage from "../Pages/gig";
+import CreateGig from "../Pages/createGig";
 function Routing(){
     return(
             <Routes>
@@ -18,6 +19,7 @@ function Routing(){
                 <Route path="/dashboard" element={<PrivateRoute><Dashboard/></PrivateRoute>}/>
                 <Route path="/gigs" element={<PrivateRoute><GigsPage /></PrivateRoute>} />
                 <Route path="/profile/:id" element={<PrivateRoute><Profile /></PrivateRoute>} />
+                <Route path="/create-gig" element={<PrivateRoute><CreateGig /></PrivateRoute>} />
             </Routes>
     )
 }

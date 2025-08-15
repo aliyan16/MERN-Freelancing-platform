@@ -2,9 +2,10 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSellerGigs } from "../slices/gigSlice"
 import { RootState } from "../appstore/store";
-
+import { useNavigate } from "react-router-dom";
 function GigsPage() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { list, loading } = useSelector((state: RootState) => state.gigs);
 
   useEffect(() => {
@@ -18,7 +19,7 @@ function GigsPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold">Gigs</h2>
-        <button className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg">
+        <button className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg" onClick={() => navigate("/create-gig")}>
           Create a New Gig
         </button>
       </div>
