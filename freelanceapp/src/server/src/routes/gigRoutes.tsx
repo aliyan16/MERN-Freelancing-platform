@@ -11,14 +11,15 @@ router.post('/',upload.single('image'),async(req,res)=>{
         if(req.file){
             imageUrl=await uploadToAzure(req.file)
         }
-        const newGig={
+        const newGig=new Gig({
             title:req.body.title,
             description:req.body.description,
             price:req.body.price,
             category:req.body.category,
             deliveryTime:req.body.deliveryTime,
             image:imageUrl
-        }
+        })
+        await newGig.save();
         res.status(201).json(newGig)
     }catch(e){
         res.status(500).json({error:e})
