@@ -13,9 +13,17 @@ export const fetchSellerGigs=createAsyncThunk('gigs/fetchSellerGigs',async(_,{re
     }
 })
 interface Gig{
-    id:string;
+    _id:string;
     title:string;
+    description:string;
     price:number;
+    category:string;
+    deliveryTime:string;
+    image:string;
+    impressions:number;
+    clicks:number;
+    orders:number;
+    cancellations:number;
 }
 interface GigSlice{
     list:Gig[];

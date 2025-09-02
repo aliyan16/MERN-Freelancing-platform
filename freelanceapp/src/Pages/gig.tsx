@@ -1,15 +1,16 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSellerGigs } from "../slices/gigSlice"
-import { RootState } from "../appstore/store";
+import { fetchSellerGigs } from "../slices/gigSlice";
+import { RootState, AppDispatch } from "../appstore/store";
 import { useNavigate } from "react-router-dom";
+
 function GigsPage() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const { list, loading } = useSelector((state: RootState) => state.gigs);
 
   useEffect(() => {
-    dispatch(fetchSellerGigs() as any);
+    dispatch(fetchSellerGigs());
   }, [dispatch]);
 
   if (loading) return <div className="p-6">Loading gigs...</div>;
@@ -19,14 +20,19 @@ function GigsPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold">Gigs</h2>
-        <button className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg" onClick={() => navigate("/create-gig")}>
+        <button
+          className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg"
+          onClick={() => navigate("/create-gig")}
+        >
           Create a New Gig
         </button>
       </div>
 
       {/* Tabs */}
       <div className="flex gap-6 border-b mb-4 text-gray-600 font-medium">
-        <button className="pb-2 border-b-2 border-green-500 text-green-600">Active ({list.length})</button>
+        <button className="pb-2 border-b-2 border-green-500 text-green-600">
+          Active ({list.length})
+        </button>
         <button className="pb-2">Pending Approval</button>
         <button className="pb-2">Requires Modification</button>
         <button className="pb-2">Draft</button>
@@ -48,7 +54,7 @@ function GigsPage() {
             </tr>
           </thead>
           <tbody>
-            {list.map((gig: any) => (
+            {list.map((gig) => (
               <tr key={gig._id} className="border-t">
                 <td className="p-3 flex items-center gap-3">
                   <input type="checkbox" />

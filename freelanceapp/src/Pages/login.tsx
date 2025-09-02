@@ -61,7 +61,7 @@ function SignIn() {
 
         <div className="mt-4 text-center">
           <a
-            onClick={()=>navigate('/register')}
+            onClick={()=>navigate('/auth/register')}
             className="text-sm text-blue-600 hover:underline cursor-pointer"
           >
             Or Create Account
