@@ -7,6 +7,7 @@ export interface IGig extends Document {
   category: string;
   deliveryTime: number;
   image: string;
+  imageUrl?: string;
   impressions: number;
   clicks: number;
   orders: number;
@@ -21,6 +22,7 @@ const GigSchema: Schema = new Schema(
     category: { type: String, required: true },
     deliveryTime: { type: Number, required: true },
     image: { type: String, required: false },
+    // imageUrl:{type:String,required:false},
     impressions: { type: Number, default: 0 },
     clicks: { type: Number, default: 0 },
     orders: { type: Number, default: 0 },

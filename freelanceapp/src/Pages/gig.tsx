@@ -59,7 +59,7 @@ function GigsPage() {
                 <td className="p-3 flex items-center gap-3">
                   <input type="checkbox" />
                   <img
-                    src={gig.image || "https://via.placeholder.com/80"}
+                    src={gig.imageUrl || "https://via.placeholder.com/80"}
                     alt={gig.title}
                     className="w-20 h-12 rounded object-cover"
                   />

@@ -49,7 +49,7 @@ function Dashboard() {
                   className="bg-white border rounded-xl shadow hover:shadow-lg transition duration-200 overflow-hidden"
                 >
                   <img
-                    src={gig.image || "https://via.placeholder.com/300x200"}
+                    src={gig.imageUrl || "https://via.placeholder.com/300x200"}
                     alt={gig.title}
                     className="w-full h-40 object-cover"
                   />

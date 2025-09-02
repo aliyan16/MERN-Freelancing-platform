@@ -6,8 +6,8 @@ const api=axios.create({
 })
 export const fetchSellerGigs=createAsyncThunk('gigs/fetchSellerGigs',async(_,{rejectWithValue})=>{
     try{
-        const {data}=await api.get('/gigs')
-        return data
+        const res=await api.get('/gigs')
+        return res.data as Gig[]
     }catch(e){
         return rejectWithValue(e.response?.data || 'failed to fetch gigs')
     }
@@ -24,6 +24,7 @@ interface Gig{
     clicks:number;
     orders:number;
     cancellations:number;
+    imageUrl?:string;
 }
 interface GigSlice{
     list:Gig[];
