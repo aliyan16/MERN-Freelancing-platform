@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     /* Base Settings */
-    "target": "es2020",
+    "target": "ESNext",
     "module": "commonjs",        // Node.js uses CommonJS
     "outDir": "./dist",         // Where to emit JS files
     "rootDir": "./src",         // Source directory
@@ -19,6 +19,6 @@
     "moduleResolution": "node", // Standard for Node.js
     "resolveJsonModule": true   // For JSON imports
   },
-  "include": ["src"],
+  "include": ["src/server/src"],
   "exclude": ["node_modules"]
 }

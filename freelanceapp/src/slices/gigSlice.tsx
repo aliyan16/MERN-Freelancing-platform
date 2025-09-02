@@ -1,25 +1,53 @@
-import {createSlice,createAsyncThunk} from '@reduxjs/toolkit'
-import axios from 'axios'
+import { createSlice,createAsyncThunk,PayloadAction } from "@reduxjs/toolkit";
+import axios from "axios";
 
-const fetchSellerGigs=createAsyncThunk('gigs/fetchSellerGigs',async()=>{
-    const {data}=await axios.get('http://localhost:5000/api/gigs')
-    return data
+const api=axios.create({
+    baseURL:'http://localhost:5000/api'
 })
+export const fetchSellerGigs=createAsyncThunk('gigs/fetchSellerGigs',async(_,{rejectWithValue})=>{
+    try{
+        const {data}=await api.get('/gigs')
+        return data
+    }catch(e){
+        return rejectWithValue(e.response?.data || 'failed to fetch gigs')
+    }
+})
+interface Gig{
+    id:string;
+    title:string;
+    price:number;
+}
+interface GigSlice{
+    list:Gig[];
+    loading:boolean;
+    error:string|null;
+}
 
-const gigSlice=createSlice({
+const initialState:GigSlice={
+    list:[],
+    loading:false,
+    error:null
+}
+
+const gigSlice =createSlice({
     name:'gigs',
-    initialState:{list:[],loading:false},
+    initialState,
     reducers:{},
     extraReducers:(builder)=>{
         builder
-            .addCase(fetchSellerGigs.pending,(state)=>{state.loading=true})
-            .addCase(fetchSellerGigs.fulfilled,(state,action)=>{
-                state.loading=false;
-                state.list=action.payload
+            .addCase(fetchSellerGigs.pending,(state)=>{
+                state.loading=true;
+                state.error=null;
             })
-            .addCase(fetchSellerGigs.rejected,(state)=>{state.loading=false})
+            .addCase(fetchSellerGigs.fulfilled,(state,action:PayloadAction<Gig[]>)=>{
+                state.loading=false;
+                state.list=action.payload;
+            })
+            .addCase(fetchSellerGigs.rejected,(state,action)=>{
+                state.loading=false;
+                state.error=action.payload as string
+            })
     }
 })
 
-export default gigSlice.reducer
-export {fetchSellerGigs}
+export default gigSlice.reducer;
