@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../appstore/store";
 import { Link } from "react-router-dom";
@@ -9,9 +9,15 @@ function Dashboard() {
   const dispatch = useDispatch<AppDispatch>();
   const { list, loading } = useSelector((state: RootState) => state.gigs);
 
+  const fetched = useRef(false);
+
   useEffect(() => {
-    dispatch(fetchSellerGigs());
+    if (!fetched.current) {
+      dispatch(fetchSellerGigs());
+      fetched.current = true;
+    }
   }, [dispatch]);
+
 
   return (
     <div className="p-6 max-w-7xl mx-auto">

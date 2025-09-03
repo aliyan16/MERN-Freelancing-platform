@@ -8,20 +8,27 @@ const router = express.Router()
 
 
 
-function generateSASUrl(blobName:string):string{
-  const blockBlobClient=containerClient.getBlockBlobClient(blobName)
-  const sasToken=generateBlobSASQueryParameters(
+function generateSASUrl(blobName: string): string {
+  const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+
+  const now = new Date();
+  const startsOn = new Date(now.valueOf() - 20 * 60 * 1000); // 20 mins earlier
+  const expiresOn = new Date(now.valueOf() + 60 * 60 * 1000); // +1 hour
+
+  const sasToken = generateBlobSASQueryParameters(
     {
-      containerName:containerClient.containerName,
-      blobName:blobName,
-      permissions:BlobSASPermissions.parse('r'),
-      startsOn:new Date(new Date().valueOf()-5*60*1000),
-      expiresOn:new Date(new Date().valueOf()+60*60*1000)
+      containerName: containerClient.containerName,
+      blobName,
+      permissions: BlobSASPermissions.parse("r"),
+      startsOn,
+      expiresOn,
     },
     sharedKeyCredentials
-  ).toString()
-  return `${blockBlobClient.url}?${sasToken}`
+  ).toString();
+
+  return `${blockBlobClient.url}?${sasToken}`;
 }
+
 
 router.post('/',upload.single('image'),async(req,res)=>{
   try{
@@ -52,14 +59,16 @@ router.post('/',upload.single('image'),async(req,res)=>{
 router.get('/',async(req,res)=>{
   try{
     const gigs=await Gig.find().sort({createdAt:-1})
+    console.log("Number of gigs in DB:", gigs.length);
     const gigsWithUrls=gigs.map((gig)=>{
       let imageUrl:string|null=null
       if(gig.image){
         imageUrl=generateSASUrl(gig.image)
+        console.log('Generated imageUrl before return :',imageUrl)
       }
       return{
         ...gig.toObject(),
-        imageUrl: gig.image ? generateSASUrl(gig.image) : null,
+        imageUrl
       }
 
     })
