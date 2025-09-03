@@ -64,7 +64,7 @@ router.get('/',async(req,res)=>{
       let imageUrl:string|null=null
       if(gig.image){
         imageUrl=generateSASUrl(gig.image)
-        console.log('Generated imageUrl before return :',imageUrl)
+        // console.log('Generated imageUrl before return :',imageUrl)
       }
       return{
         ...gig.toObject(),
@@ -79,7 +79,7 @@ router.get('/',async(req,res)=>{
   }
 })
 
-router.get('/api/gigs/:id',async(req,res)=>{
+router.get('/:id',async(req,res)=>{
   try{
     const gig=await Gig.findById(req.params.id)
     if(!gig){

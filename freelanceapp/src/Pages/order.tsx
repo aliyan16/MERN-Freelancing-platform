@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 interface Gig {
@@ -13,15 +13,18 @@ interface Gig {
 }
 
 function Order() {
-  const { gigId } = useParams<{ gigId: string }>();
-  const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
+  // const navigate = useNavigate();
   const [gig, setGig] = useState<Gig | null>(null);
   const [loading, setLoading] = useState(true);
 
+
+  const fetched = useRef(false);
   useEffect(() => {
-    const fetchGig = async () => {
+    if(!fetched.current){
+      const fetchGig = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/gigs/${gigId}`);
+        const res = await axios.get(`http://localhost:5000/api/gigs/${id}`);
         setGig(res.data);
       } catch (e) {
         console.error("Error fetching gig:", e);
@@ -30,7 +33,10 @@ function Order() {
       }
     };
     fetchGig();
-  }, [gigId]);
+    fetched.current=true;
+    }
+    
+  }, [id]);
 
   const handlePlaceOrder = async () => {
     try {

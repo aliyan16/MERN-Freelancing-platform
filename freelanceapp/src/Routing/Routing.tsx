@@ -25,7 +25,7 @@ function Routing(){
                 <Route path="/gigs" element={<PrivateRoute><><Header/> <GigsPage /></></PrivateRoute>} />
                 <Route path="/profile/:id" element={<PrivateRoute><><Header/> <Profile /></></PrivateRoute>} />
                 <Route path="/create-gig" element={<PrivateRoute><><Header/> <CreateGig /></></PrivateRoute>} />
-                <Route path="/gigs/:gigId" element={<PrivateRoute><><Header/> <Order /></></PrivateRoute>} />
+                <Route path="/gigs/:id" element={<PrivateRoute><><Header/> <Order /></></PrivateRoute>} />
             </Routes>
     )
 }
