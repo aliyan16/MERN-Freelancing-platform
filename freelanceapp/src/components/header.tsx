@@ -75,7 +75,7 @@ function Header() {
                       to="/orders"
                       className="block px-4 py-2 hover:bg-gray-100"
                     >
-                      View Orders
+                      View Purchases
                     </Link>
                   )}
                 </div>

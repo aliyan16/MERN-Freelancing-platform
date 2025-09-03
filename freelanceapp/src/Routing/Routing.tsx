@@ -10,6 +10,7 @@ import Dashboard from "../Pages/dashboard";
 import Profile from "../Pages/profile";
 import GigsPage from "../Pages/gig";
 import CreateGig from "../Pages/createGig";
+import Order from "../Pages/order";
 import { RootState } from "../appstore/store";
 import Header from "../components/header";
 function Routing(){
@@ -24,6 +25,7 @@ function Routing(){
                 <Route path="/gigs" element={<PrivateRoute><><Header/> <GigsPage /></></PrivateRoute>} />
                 <Route path="/profile/:id" element={<PrivateRoute><><Header/> <Profile /></></PrivateRoute>} />
                 <Route path="/create-gig" element={<PrivateRoute><><Header/> <CreateGig /></></PrivateRoute>} />
+                <Route path="/gigs/:gigId" element={<PrivateRoute><><Header/> <Order /></></PrivateRoute>} />
             </Routes>
     )
 }

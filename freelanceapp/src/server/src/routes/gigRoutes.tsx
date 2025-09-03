@@ -79,6 +79,23 @@ router.get('/',async(req,res)=>{
   }
 })
 
+router.get('/api/gigs/:id',async(req,res)=>{
+  try{
+    const gig=await Gig.findById(req.params.id)
+    if(!gig){
+      return res.status(404).json({error:'Gig not found'})
+    }
+    let imageUrl:string|null=null
+    if(gig.image){
+      imageUrl=generateSASUrl(gig.image)
+    }
+    res.json({...gig.toObject(),imageUrl})
+  }catch(e){
+    console.error(e)
+    res.status(500).json({error:e})
+  }
+})
+
 
 
 // router.post('/',upload.single('image'),async(req,res)=>{

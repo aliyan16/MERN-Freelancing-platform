@@ -30,4 +30,16 @@ const userSchema=new Schema<IUser>(
     }
 )
 
+userSchema.virtual('purchases',{
+    ref:'Order',
+    localField:'_id',
+    foreignField:'buyer'
+})
+
+userSchema.virtual('sales',{
+    ref:'Order',
+    localField:'_id',
+    foreignField:'seller'
+})
+
 export default mongoose.model<IUser>('User', userSchema)

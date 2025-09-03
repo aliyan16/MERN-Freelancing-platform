@@ -3,10 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../appstore/store";
 import { Link } from "react-router-dom";
 import { fetchSellerGigs } from "../slices/gigSlice";
+import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
   const user = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const { list, loading } = useSelector((state: RootState) => state.gigs);
 
   const fetched = useRef(false);
@@ -42,7 +44,7 @@ function Dashboard() {
               to="/orders"
               className="bg-blue-600 text-white px-4 py-2 rounded-lg"
             >
-              View Your Orders
+              View Your Purchases
             </Link>
           </div>
 
@@ -63,9 +65,15 @@ function Dashboard() {
                     <h3 className="text-lg font-semibold mb-2 truncate">
                       {gig.title}
                     </h3>
-                    <p className="text-green-600 font-bold text-lg">
-                      ${gig.price}
-                    </p>
+                    <div className="flex">
+                      <p className="text-green-600 font-bold text-lg">
+                        ${gig.price}
+                      </p>
+                      <div className="ml-auto">
+                        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg" onClick={()=>navigate(`/gigs/${gig._id}`)} >Place order</button>
+                      </div>
+                    </div>
+                    
                   </div>
                 </div>
               ))}
