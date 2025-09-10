@@ -37,6 +37,7 @@ router.post('/',upload.single('image'),async(req,res)=>{
       blobName=await uploadToAzure(req.file)
     }
     const newGig=new Gig({
+      sellerId:req.body.sellerId,
       title:req.body.title,
       description:req.body.description,
       price:req.body.price,

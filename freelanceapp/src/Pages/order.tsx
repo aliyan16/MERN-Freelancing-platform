@@ -21,6 +21,8 @@ function Order() {
   // const navigate = useNavigate();
   const [gig, setGig] = useState<Gig | null>(null);
   const [loading, setLoading] = useState(true);
+  const user=useSelector((state: RootState) => state.auth.user);
+  const dispatch=useDispatch<AppDispatch>()
 
 
   const fetched = useRef(false);
@@ -48,7 +50,7 @@ function Order() {
       return;
     }
     try {
-      await dispatch(placeOrder({buyerId:user.id,sellerId:gig.sellerId,gigId:gig._id,price:gig.price})).unwrap()
+      await dispatch(placeOrder({buyerId:user._id,sellerId:gig.sellerId,gigId:gig._id,price:gig.price})).unwrap()
       alert("Order placed successfully!");
 
     } catch (err) {
@@ -60,8 +62,6 @@ function Order() {
 
   if (loading) return <p className="text-center mt-10">Loading...</p>;
   if (!gig) return <p className="text-center mt-10">Gig not found.</p>;
-  const user=useSelector((state: RootState) => state.auth.user);
-  const dispatch=useDispatch<AppDispatch>()
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50 p-6">
       <div className="max-w-2xl w-full bg-white shadow-xl rounded-2xl overflow-hidden">

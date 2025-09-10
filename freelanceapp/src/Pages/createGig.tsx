@@ -2,10 +2,14 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../appstore/store";
 
 function CreateGig() {
   const navigate = useNavigate();
+  const user=useSelector((state:RootState)=>state.auth.user)
   const [gigData, setGigData] = useState({
+    sellerId: "",
     title: "",
     description: "",
     price: "",
@@ -27,8 +31,13 @@ function CreateGig() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if(!user){
+      alert("User not logged in");
+      return;
+    }
 
     const formData = new FormData();
+    formData.append("sellerId", user._id);
     formData.append("title", gigData.title);
     formData.append("description", gigData.description);
     formData.append("price", gigData.price);
