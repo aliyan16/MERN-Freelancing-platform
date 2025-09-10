@@ -39,86 +39,98 @@ function Header() {
   }, []);
 
   return (
-    <header className="bg-white shadow-md">
-      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-        {/* Left Section */}
-        <div className="flex items-center space-x-4">
-          <Link to="/dashboard" className="text-xl font-bold text-green-600">
-            FreelancingApp
-          </Link>
-        </div>
+    <header className="bg-gradient-to-r from-green-500 to-emerald-600 shadow-lg">
+    <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      
+      {/* Left Section - Branding */}
+      <div className="flex items-center space-x-4">
+        <Link
+          to="/dashboard"
+          className="text-2xl font-extrabold text-white tracking-wide hover:opacity-90 transition"
+        >
+          Freelancing<span className="text-yellow-300">App</span>
+        </Link>
+      </div>
 
-        {/* Middle Section */}
-        <div className="flex items-center space-x-6">
-          <Link to='/dashboard' className="px-3 py-1 rounded-md bg-gray-100 hover:bg-gray-200">Dashboard</Link>
+      {/* Middle Section - Nav Links */}
+      <div className="flex items-center space-x-6">
+        <Link
+          to="/dashboard"
+          className="px-4 py-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition"
+        >
+          Dashboard
+        </Link>
 
-          {user && (
-            <div className="relative" ref={menuRef}>
-              <button
-                onClick={() => setIsMenuOpen((prev) => !prev)}
-                className="px-3 py-1 rounded-md bg-gray-100 hover:bg-gray-200"
-              >
-                Menu
-              </button>
-              {isMenuOpen && (
-                <div className="absolute left-0 mt-2 bg-white shadow-lg rounded-md w-40 z-50">
-                  {user.role === "Seller" && (
-                    <>
+        {user && (
+          <div className="relative" ref={menuRef}>
+            <button
+              onClick={() => setIsMenuOpen((prev) => !prev)}
+              className="px-4 py-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition"
+            >
+              Menu ▾
+            </button>
+
+            {isMenuOpen && (
+              <div className="absolute left-0 mt-3 bg-white shadow-xl rounded-lg w-44 z-50 overflow-hidden">
+                {user.role === "Seller" && (
+                  <>
                     <Link
                       to="/gigs"
-                      className="block px-4 py-2 hover:bg-gray-100"
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
                     >
                       View Gigs
                     </Link>
                     <Link
                       to="/orders"
-                      className="block px-4 py-2 hover:bg-gray-100"
+                      className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
                     >
                       View Orders
                     </Link>
-                    </>
-                  )}
-                  {user.role === "Buyer" && (
-                    <Link
-                      to="/orders"
-                      className="block px-4 py-2 hover:bg-gray-100"
-                    >
-                      View Purchases
-                    </Link>
-                  )}
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-
-        {/* Right Section */}
-        <div className="relative" ref={userRef}>
-          <button
-            onClick={() => setIsUserOpen((prev) => !prev)}
-            className="px-3 py-1 rounded-md bg-gray-100 hover:bg-gray-200"
-          >
-            {user?.name || "User"}
-          </button>
-          {isUserOpen && (
-            <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-md w-40 z-50">
-              <Link
-                to="/settings"
-                className="block px-4 py-2 hover:bg-gray-100"
-              >
-                Settings
-              </Link>
-              <button
-                onClick={handleLogout}
-                className="w-full text-left px-4 py-2 hover:bg-gray-100"
-              >
-                Logout
-              </button>
-            </div>
-          )}
-        </div>
+                  </>
+                )}
+                {user.role === "Buyer" && (
+                  <Link
+                    to="/orders"
+                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                  >
+                    View Purchases
+                  </Link>
+                )}
+              </div>
+            )}
+          </div>
+        )}
       </div>
-    </header>
+
+      {/* Right Section - User Dropdown */}
+      <div className="relative" ref={userRef}>
+        <button
+          onClick={() => setIsUserOpen((prev) => !prev)}
+          className="px-4 py-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition"
+        >
+          {user?.name || "User"} ▾
+        </button>
+
+        {isUserOpen && (
+          <div className="absolute right-0 mt-3 bg-white shadow-xl rounded-lg w-44 z-50 overflow-hidden">
+            <Link
+              to="/settings"
+              className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+            >
+              Settings
+            </Link>
+            <button
+              onClick={handleLogout}
+              className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+            >
+              Logout
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  </header>
+
   );
 }
 
