@@ -27,13 +27,14 @@ const initialState:OrderState={
     error:null
 }
 
-export const placeOrder=createAsyncThunk('orders/placeOrder',async(orderData:{buyerId:string,sellerId:string,gigId:string,price:number})=>{
+export const placeOrder=createAsyncThunk('orders/placeOrder',async(orderData:{buyerId:string,sellerId:string,gigId:string,price:number},{rejectWithValue})=>{
     try{
         const res=await axios.post(`${baseUrl}/orders`,{buyerId:orderData.buyerId,sellerId:orderData.sellerId,gigId:orderData.gigId,price:orderData.price})
         return res.data
 
     }catch(e){
         console.error('Failed to place order',e)
+        return rejectWithValue(e.response?.data || "Failed to place order");
     }
 })
 

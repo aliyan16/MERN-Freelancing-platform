@@ -37,7 +37,7 @@ function CreateGig() {
     }
 
     const formData = new FormData();
-    formData.append("sellerId", user._id);
+    formData.append("sellerId", user.id);
     formData.append("title", gigData.title);
     formData.append("description", gigData.description);
     formData.append("price", gigData.price);

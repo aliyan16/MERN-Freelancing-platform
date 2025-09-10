@@ -49,13 +49,11 @@ function Order() {
       alert("User or Gig information is missing.");
       return;
     }
-    try {
-      await dispatch(placeOrder({buyerId:user._id,sellerId:gig.sellerId,gigId:gig._id,price:gig.price})).unwrap()
+    const action=await dispatch(placeOrder({buyerId:user.id,sellerId:gig.sellerId,gigId:gig._id,price:gig.price}))
+    if(placeOrder.fulfilled.match(action)){
       alert("Order placed successfully!");
-
-    } catch (err) {
-      console.error("Error placing order:", err);
-      alert("Failed to place order.");
+    } else if(placeOrder.rejected.match(action)){
+      alert(`Failed to place order: ${action.payload || action.error.message}`);
     }
   };
     

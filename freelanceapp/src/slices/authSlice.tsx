@@ -1,6 +1,6 @@
 import { createSlice,PayloadAction } from "@reduxjs/toolkit";
 type User={
-    _id:string,
+    id:string,
     name:string
     role:string
 }
