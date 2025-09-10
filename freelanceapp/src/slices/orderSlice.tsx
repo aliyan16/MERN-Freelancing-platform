@@ -27,9 +27,9 @@ const initialState:OrderState={
     error:null
 }
 
-export const placeOrder=createAsyncThunk('orders/placeOrder',async(orderDate:{buyerId:string,sellerId:string,gigId:string,price:number})=>{
+export const placeOrder=createAsyncThunk('orders/placeOrder',async(orderData:{buyerId:string,sellerId:string,gigId:string,price:number})=>{
     try{
-        const res=await axios.post(`${baseUrl}/orders`,orderDate)
+        const res=await axios.post(`${baseUrl}/orders`,{buyerId:orderData.buyerId,sellerId:orderData.sellerId,gigId:orderData.gigId,price:orderData.price})
         return res.data
 
     }catch(e){

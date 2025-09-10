@@ -16,7 +16,7 @@ const orderSchema=new Schema<IOrder>(
         seller:{type:Schema.Types.ObjectId,ref:'User',required:true},
         gig:{type:Schema.Types.ObjectId,ref:'Gig',required:true},
         price:{type:Number,required:true},
-        status:{type:String,enum:['in-progress','completed','canceled'],required:true},
+        status:{type:String,enum:['in-progress','completed','canceled'],default:'in-progress'},
         createdAt:{type:Date,default:Date.now},
         updatedAt:{type:Date,default:Date.now}
     },

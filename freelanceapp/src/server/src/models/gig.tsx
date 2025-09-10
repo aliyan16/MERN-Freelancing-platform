@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface IGig extends Document {
+  sellerId: string;
   title: string;
   description: string;
   price: number;
@@ -16,6 +17,7 @@ export interface IGig extends Document {
 
 const GigSchema: Schema = new Schema(
   {
+    sellerId:{type:String,required:true},
     title: { type: String, required: true },
     description: { type: String, required: true },
     price: { type: Number, required: true },

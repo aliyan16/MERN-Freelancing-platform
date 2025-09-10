@@ -1,9 +1,13 @@
 import axios from "axios";
 import React, { useState, useEffect,useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { placeOrder } from "../slices/orderSlice";
+import { AppDispatch,RootState } from "../appstore/store";
+import {useSelector,useDispatch} from 'react-redux'
 
 interface Gig {
   _id: string;
+  sellerId:string;
   title: string;
   description: string;
   price: number;
@@ -39,17 +43,25 @@ function Order() {
   }, [id]);
 
   const handlePlaceOrder = async () => {
+    if(!user || !gig) {
+      alert("User or Gig information is missing.");
+      return;
+    }
     try {
-      
+      await dispatch(placeOrder({buyerId:user.id,sellerId:gig.sellerId,gigId:gig._id,price:gig.price})).unwrap()
+      alert("Order placed successfully!");
+
     } catch (err) {
       console.error("Error placing order:", err);
       alert("Failed to place order.");
     }
   };
+    
 
   if (loading) return <p className="text-center mt-10">Loading...</p>;
   if (!gig) return <p className="text-center mt-10">Gig not found.</p>;
-
+  const user=useSelector((state: RootState) => state.auth.user);
+  const dispatch=useDispatch<AppDispatch>()
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50 p-6">
       <div className="max-w-2xl w-full bg-white shadow-xl rounded-2xl overflow-hidden">
