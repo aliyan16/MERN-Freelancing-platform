@@ -3,15 +3,29 @@ import axios from "axios";
 
 const baseUrl='http://localhost:5000/api'
 
-interface Order{
-    _id:string;
-    buyerId:string;
-    sellerId:string;
-    gigId:string;
-    price:number;
-    status:'in-progress' | 'completed' | 'canceled';
-    createdAt:string;
+interface UserRef {
+  _id: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
 }
+
+interface GigRef {
+  _id: string;
+  title: string;
+  price: number;
+}
+
+interface Order {
+  _id: string;
+  buyer: string | UserRef;   // can be just ID string or populated object
+  seller: string | UserRef;  // same here
+  gig: string | GigRef;      // same here
+  price: number;
+  status: 'in-progress' | 'completed' | 'canceled';
+  createdAt: string;
+}
+
 
 interface OrderState{
     orders:Order[];
@@ -41,7 +55,8 @@ export const placeOrder=createAsyncThunk('orders/placeOrder',async(orderData:{bu
 export const fetchBuyerOrders=createAsyncThunk('orders/fetchBuyerOrders',async(buyerId:string)=>{
     try{
         const res=await axios.get(`${baseUrl}/orders/buyer/${buyerId}`)
-        return res.data
+        console.log('Fetch Buyer res: ',res.data)
+        return res.data.orders || res.data
     }catch(e){
         console.error('Failed to fetch buyer orders',e)
     }
@@ -50,7 +65,9 @@ export const fetchBuyerOrders=createAsyncThunk('orders/fetchBuyerOrders',async(b
 export const fetchSellerOrders=createAsyncThunk('orders/fetchSellerOrders',async(sellerId:string)=>{
     try{
         const res=await axios.get(`${baseUrl}/orders/seller/${sellerId}`)
-        return res.data
+        console.log('Fetch Seller res: ',res.data)
+
+        return res.data.orders || res.data
     }catch(e){
         console.error('Failed to fetch seller orders',e)
     }
@@ -69,7 +86,8 @@ const orderSlice=createSlice({
             .addCase(placeOrder.fulfilled,(state,action)=>{
                 state.loading=false;
                 if(action.payload){
-                    state.orders.push(action.payload)
+                    const order=action.payload.orders || action.payload
+                    state.orders.push(order)
                 }
             })
             .addCase(placeOrder.rejected,(state,action)=>{
@@ -82,6 +100,7 @@ const orderSlice=createSlice({
             })
             .addCase(fetchBuyerOrders.fulfilled, (state, action) => {
                 state.loading = false;
+
                 state.orders = action.payload;
             })
             .addCase(fetchBuyerOrders.rejected, (state, action) => {

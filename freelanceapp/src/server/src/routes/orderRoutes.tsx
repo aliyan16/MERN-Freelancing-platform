@@ -21,7 +21,7 @@ router.post('/',async(req,res)=>{
 })
 
 
-router.get('buyer/:buyerId',async(req,res)=>{
+router.get('/buyer/:buyerId',async(req,res)=>{
     try{
         const orders=await Order.find({buyer:req.params.buyerId}).populate('seller').populate('gig')
         res.status(200).json(orders)
@@ -30,7 +30,7 @@ router.get('buyer/:buyerId',async(req,res)=>{
         res.status(500).json({error:e})
     }
 })
-router.get('seller/:sellerId',async(req,res)=>{
+router.get('/seller/:sellerId',async(req,res)=>{
     try{
         const orders=await Order.find({seller:req.params.sellerId}).populate('buyer').populate('gig')
         res.status(200).json(orders)
