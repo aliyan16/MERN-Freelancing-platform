@@ -56,79 +56,94 @@ function CreateGig() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-lg mt-6">
-      <h2 className="text-2xl font-bold mb-4">Create a New Gig</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        
-        <input
-          type="text"
-          name="title"
-          placeholder="Gig Title"
-          value={gigData.title}
-          onChange={handleChange}
-          className="w-full p-2 border rounded"
-          required
-        />
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50 flex items-center justify-center p-6">
+  <div className="max-w-3xl w-full bg-white shadow-xl rounded-2xl p-8">
+    {/* Header */}
+    <h2 className="text-3xl font-bold text-gray-800 mb-2">Create a New Gig</h2>
+    <p className="text-gray-500 mb-6">Fill out the details below to publish your gig.</p>
 
-        <textarea
-          name="description"
-          placeholder="Gig Description"
-          value={gigData.description}
-          onChange={handleChange}
-          className="w-full p-2 border rounded"
-          rows={4}
-          required
-        />
+    <form onSubmit={handleSubmit} className="space-y-5">
+      {/* Title */}
+      <input
+        type="text"
+        name="title"
+        placeholder="Gig Title"
+        value={gigData.title}
+        onChange={handleChange}
+        className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500"
+        required
+      />
 
-        <input
-          type="number"
-          name="price"
-          placeholder="Price ($)"
-          value={gigData.price}
-          onChange={handleChange}
-          className="w-full p-2 border rounded"
-          required
-        />
+      {/* Description */}
+      <textarea
+        name="description"
+        placeholder="Gig Description"
+        value={gigData.description}
+        onChange={handleChange}
+        rows={4}
+        className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500"
+        required
+      />
 
-        <select
-          name="category"
-          value={gigData.category}
-          onChange={handleChange}
-          className="w-full p-2 border rounded"
-          required
-        >
-          <option value="">Select Category</option>
-          <option value="web">Web Development</option>
-          <option value="design">Graphic Design</option>
-          <option value="writing">Writing</option>
-        </select>
+      {/* Price */}
+      <input
+        type="number"
+        name="price"
+        placeholder="Price ($)"
+        value={gigData.price}
+        onChange={handleChange}
+        className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500"
+        required
+      />
 
-        <input
-          type="number"
-          name="deliveryTime"
-          placeholder="Delivery Time (Days)"
-          value={gigData.deliveryTime}
-          onChange={handleChange}
-          className="w-full p-2 border rounded"
-          required
-        />
+      {/* Category */}
+      <select
+        name="category"
+        value={gigData.category}
+        onChange={handleChange}
+        className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 bg-white"
+        required
+      >
+        <option value="">Select Category</option>
+        <option value="web">Web Development</option>
+        <option value="design">Graphic Design</option>
+        <option value="writing">Writing</option>
+      </select>
 
+      {/* Delivery Time */}
+      <input
+        type="number"
+        name="deliveryTime"
+        placeholder="Delivery Time (Days)"
+        value={gigData.deliveryTime}
+        onChange={handleChange}
+        className="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500"
+        required
+      />
+
+      {/* File Upload */}
+      <div className="border-2 border-dashed border-gray-300 rounded-xl p-4 text-center">
+        <label className="block text-gray-500 mb-2">Upload Gig Image</label>
         <input
           type="file"
           name="image"
           accept="image/*"
           onChange={handleFileChange}
-          className="w-full"
+          className="w-full text-gray-600"
         />
+      </div>
 
-        <button
-          type="submit"
-          className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
-        >
-          Publish Gig
-        </button>
-      </form>
-    </div>
+      {/* Submit */}
+      <button
+        type="submit"
+        className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold py-3 rounded-xl shadow-md transition transform hover:scale-[1.02]"
+      >
+        🚀 Publish Gig
+      </button>
+    </form>
+  </div>
+</div>
+
   );
 }
 
