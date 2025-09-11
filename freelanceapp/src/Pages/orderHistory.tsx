@@ -52,7 +52,7 @@ function OrderHistory() {
                         <span className="text-gray-600 font-normal">
                             {typeof order.gig === "string"
                             ? order.gig
-                            : order.gig.title}
+                            : order.gig?.title}
                         </span>
                         </p>
                         <p className="text-sm text-gray-700 mt-1">
@@ -76,6 +76,12 @@ function OrderHistory() {
                         <p className="text-gray-500 text-xs mt-2">
                         Placed: {new Date(order.createdAt).toLocaleString()}
                         </p>
+                        <p className="text-gray-500 text-xs mt-2">
+                        Requirements: {order.requirements}
+                        </p>
+                        <p className="text-gray-500 text-xs mt-2">
+                        Image: {order.image?order.image:'No Image uploaded'}
+                        </p>
                     </div>
                     <div className="text-right">
                         {user?.role === "Seller" ? (
@@ -83,15 +89,16 @@ function OrderHistory() {
                             Buyer:{" "}
                             {typeof order.buyer === "string"
                             ? order.buyer
-                            : `${order.buyer.firstName} ${order.buyer.lastName}`}
+                            : `${order.buyer?.firstName} ${order.buyer?.lastName}`}
                         </p>
                         ) : (
                         <p className="text-sm text-gray-600">
                             Seller ID:{" "}
                             {typeof order.seller === "string"
                             ? order.seller
-                            : order.seller._id}
+                            : order.seller?._id}
                         </p>
+
                         )}
                     </div>
                 </div>

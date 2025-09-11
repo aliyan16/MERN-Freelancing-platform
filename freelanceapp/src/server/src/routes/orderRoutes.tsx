@@ -62,8 +62,18 @@ router.get('/buyer/:buyerId',async(req,res)=>{
 })
 router.get('/seller/:sellerId',async(req,res)=>{
     try{
-        const orders=await Order.find({seller:req.params.sellerId}).populate('buyer').populate('gig')
-        res.status(200).json(orders)
+        const orders=await Order.find({seller:req.params.sellerId}).populate('buyer').populate('gig','title price')
+        const orderWithUrls=orders.map((order)=>{
+            let imageUrl:string|null=null
+            if(order.image){
+                imageUrl=generateSASUrl(order.image)
+            }
+            return {
+                ...order.toObject(),
+                imageUrl
+            }
+        })
+        res.status(200).json(orderWithUrls)
     }catch(e){
         console.error(e)
         res.status(500).json({error:e})
