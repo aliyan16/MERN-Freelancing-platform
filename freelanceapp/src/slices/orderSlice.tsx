@@ -18,9 +18,11 @@ interface GigRef {
 
 interface Order {
   _id: string;
-  buyer: string | UserRef;   // can be just ID string or populated object
-  seller: string | UserRef;  // same here
-  gig: string | GigRef;      // same here
+  buyer: string | UserRef; 
+  seller: string | UserRef;  
+  gig: string | GigRef;    
+  requirements:string;
+  image:string;  
   price: number;
   status: 'in-progress' | 'completed' | 'canceled';
   createdAt: string;
@@ -41,9 +43,9 @@ const initialState:OrderState={
     error:null
 }
 
-export const placeOrder=createAsyncThunk('orders/placeOrder',async(orderData:{buyerId:string,sellerId:string,gigId:string,price:number},{rejectWithValue})=>{
+export const placeOrder=createAsyncThunk('orders/placeOrder',async(orderData:{buyerId:string,sellerId:string,gigId:string,orderReq:string,reqImg:string,price:number},{rejectWithValue})=>{
     try{
-        const res=await axios.post(`${baseUrl}/orders`,{buyerId:orderData.buyerId,sellerId:orderData.sellerId,gigId:orderData.gigId,price:orderData.price})
+        const res=await axios.post(`${baseUrl}/orders`,{buyerId:orderData.buyerId,sellerId:orderData.sellerId,gigId:orderData.gigId,orderReq:orderData.orderReq,reqImg:orderData.reqImg,price:orderData.price})
         return res.data
 
     }catch(e){

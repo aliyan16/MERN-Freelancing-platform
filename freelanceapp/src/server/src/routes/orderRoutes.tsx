@@ -1,5 +1,7 @@
 import express from 'express';
 import Order from '../models/order';
+import { containerClient,sharedKeyCredentials, uploadToAzure } from '../../utilities/azureUploads';
+import { generateBlobSASQueryParameters,BlobSASPermissions } from '@azure/storage-blob';
 
 
 
@@ -7,12 +9,40 @@ import Order from '../models/order';
 const router=express.Router()
 
 
+function generateSASUrl(blobName: string): string {
+  const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+
+  const now = new Date();
+  const startsOn = new Date(now.valueOf() - 20 * 60 * 1000); // 20 mins earlier
+  const expiresOn = new Date(now.valueOf() + 60 * 60 * 1000); // +1 hour
+
+  const sasToken = generateBlobSASQueryParameters(
+    {
+      containerName: containerClient.containerName,
+      blobName,
+      permissions: BlobSASPermissions.parse("r"),
+      startsOn,
+      expiresOn,
+    },
+    sharedKeyCredentials
+  ).toString();
+
+  return `${blockBlobClient.url}?${sasToken}`;
+}
+
 
 router.post('/',async(req,res)=>{
     try{
-        const newOrder=new Order({buyer:req.body.buyerId,seller:req.body.sellerId,gig:req.body.gigId,price:req.body.price})
+        let blobName=''
+        if(req.body.reqImg){
+            blobName=await uploadToAzure(req.body.reqImg)
+        }
+        const newOrder=new Order({buyer:req.body.buyerId,seller:req.body.sellerId,gig:req.body.gigId,requirements:req.body.orderReq,image:blobName,price:req.body.price})
         await newOrder.save()
-        res.status(201).json(newOrder)
+        res.status(201).json({
+            ...newOrder,
+            imageUrl:blobName?generateSASUrl(blobName):null
+        })
 
     }catch(e){
         console.error(e)

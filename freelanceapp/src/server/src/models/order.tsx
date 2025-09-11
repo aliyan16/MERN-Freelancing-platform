@@ -4,6 +4,8 @@ export interface IOrder extends Document{
     buyer:mongoose.Types.ObjectId;
     seller:mongoose.Types.ObjectId;
     gig:mongoose.Types.ObjectId;
+    requirements:'';
+    image:'';
     price:number;
     status:'in-progress' | 'completed' | 'canceled';
     createdAt:Date;
@@ -15,6 +17,8 @@ const orderSchema=new Schema<IOrder>(
         buyer:{type:Schema.Types.ObjectId,ref:'User',required:true},
         seller:{type:Schema.Types.ObjectId,ref:'User',required:true},
         gig:{type:Schema.Types.ObjectId,ref:'Gig',required:true},
+        requirements:{type:String,required:true},
+        image:{type:String},
         price:{type:Number,required:true},
         status:{type:String,enum:['in-progress','completed','canceled'],default:'in-progress'},
         createdAt:{type:Date,default:Date.now},
