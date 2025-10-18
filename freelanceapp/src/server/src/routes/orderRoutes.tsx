@@ -3,6 +3,8 @@ import Order from '../models/order';
 import { containerClient,sharedKeyCredentials, uploadToAzure } from '../../utilities/azureUploads';
 import { generateBlobSASQueryParameters,BlobSASPermissions } from '@azure/storage-blob';
 import Gig from '../models/gig';
+import multer from "multer"
+const upload=multer({storage:multer.memoryStorage()})
 
 
 
@@ -32,7 +34,7 @@ function generateSASUrl(blobName: string): string {
 }
 
 
-router.post('/',async(req,res)=>{
+router.post('/',upload.single('image'),async(req,res)=>{
     try{
         let blobName=''
         if(req.body.reqImg){
