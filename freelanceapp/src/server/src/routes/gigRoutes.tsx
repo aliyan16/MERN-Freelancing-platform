@@ -9,7 +9,15 @@ import redisClient from "../../utilities/redisClient"
 
 
 
-function generateSASUrl(blobName: string): string {
+async function generateSASUrl(blobName: string): Promise<string> {
+  const cachedUrl=await redisClient.get(`sas_${blobName}`);
+  if(cachedUrl){
+    console.log("🧠 Cache hit for SAS URL:", cachedUrl);
+    return cachedUrl
+  }
+
+
+
   const blockBlobClient = containerClient.getBlockBlobClient(blobName);
 
   const now = new Date();
@@ -26,8 +34,11 @@ function generateSASUrl(blobName: string): string {
     },
     sharedKeyCredentials
   ).toString();
+  const sasUrl=`${blockBlobClient.url}?${sasToken}`;
+  await redisClient.setEx(`sas_${blobName}`, 3600, sasUrl); // Cache for 1 hour
+  console.log("💾 Cache set for SAS URL:", sasUrl);
 
-  return `${blockBlobClient.url}?${sasToken}`;
+  return sasUrl;
 }
 
 
@@ -69,10 +80,10 @@ router.get('/',async(req,res)=>{
     }
     const gigs=await Gig.find().sort({createdAt:-1})
     console.log("Number of gigs in DB:", gigs.length);
-    const gigsWithUrls=gigs.map((gig)=>{
+    const gigsWithUrls=gigs.map(async (gig)=>{
       let imageUrl:string|null=null
       if(gig.image){
-        imageUrl=generateSASUrl(gig.image)
+        imageUrl= await generateSASUrl(gig.image)
         // console.log('Generated imageUrl before return :',imageUrl)
       }
       return{
@@ -103,7 +114,7 @@ router.get('/:id',async(req,res)=>{
     }
     let imageUrl:string|null=null
     if(gig.image){
-      imageUrl=generateSASUrl(gig.image)
+      imageUrl=await generateSASUrl(gig.image)
     }
     const gigData={...gig.toObject(),imageUrl}
     await redisClient.setEx(`gig_${req.params.id}`,600,JSON.stringify(gigData))
