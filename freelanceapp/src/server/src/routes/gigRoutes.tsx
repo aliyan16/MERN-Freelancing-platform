@@ -5,6 +5,7 @@ import Gig from "../models/gig"
 import {  generateBlobSASQueryParameters,BlobSASPermissions } from "@azure/storage-blob"
 const upload=multer({storage:multer.memoryStorage()})
 const router = express.Router()
+import redisClient from "../../utilities/redisClient"
 
 
 
@@ -46,6 +47,7 @@ router.post('/',upload.single('image'),async(req,res)=>{
       image:blobName
     })
     await newGig.save()
+    await redisClient.del("gigs_all"); // Invalidate gigs list cache
     res.status(201).json({
       ...newGig.toObject(),
       imageUrl:blobName?generateSASUrl(blobName):null
@@ -59,6 +61,12 @@ router.post('/',upload.single('image'),async(req,res)=>{
 
 router.get('/',async(req,res)=>{
   try{
+    // Check cache
+    const cachedGigs = await redisClient.get("gigs_all");
+    if (cachedGigs) {
+      console.log("🧠 Cache hit for gigs list");
+      return res.json(JSON.parse(cachedGigs));
+    }
     const gigs=await Gig.find().sort({createdAt:-1})
     console.log("Number of gigs in DB:", gigs.length);
     const gigsWithUrls=gigs.map((gig)=>{
@@ -73,6 +81,8 @@ router.get('/',async(req,res)=>{
       }
 
     })
+    await redisClient.setEx("gigs_all", 600, JSON.stringify(gigsWithUrls));
+    console.log("💾 Cache set for gigs list");
     res.json(gigsWithUrls)
   }catch(e){
     console.error(e)
@@ -82,6 +92,11 @@ router.get('/',async(req,res)=>{
 
 router.get('/:id',async(req,res)=>{
   try{
+    const cachedGig=await redisClient.get(`gig_${req.params.id}`);
+    if(cachedGig){
+      console.log(`🧠 Cache hit for gig ${req.params.id}`);
+      return res.json(JSON.parse(cachedGig))
+    }
     const gig=await Gig.findById(req.params.id)
     if(!gig){
       return res.status(404).json({error:'Gig not found'})
@@ -90,7 +105,10 @@ router.get('/:id',async(req,res)=>{
     if(gig.image){
       imageUrl=generateSASUrl(gig.image)
     }
-    res.json({...gig.toObject(),imageUrl})
+    const gigData={...gig.toObject(),imageUrl}
+    await redisClient.setEx(`gig_${req.params.id}`,600,JSON.stringify(gigData))
+    console.log(`💾 Cache set for gig ${req.params.id}`);
+    res.json(gigData)
   }catch(e){
     console.error(e)
     res.status(500).json({error:e})

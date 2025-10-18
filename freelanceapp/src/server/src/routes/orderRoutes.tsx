@@ -37,8 +37,8 @@ function generateSASUrl(blobName: string): string {
 router.post('/',upload.single('image'),async(req,res)=>{
     try{
         let blobName=''
-        if(req.body.reqImg){
-            blobName=await uploadToAzure(req.body.reqImg)
+        if(req.file){
+            blobName=await uploadToAzure(req.file)
         }
         const newOrder=new Order({buyer:req.body.buyerId,seller:req.body.sellerId,gig:req.body.gigId,requirements:req.body.orderReq,image:blobName,price:req.body.price})
         await Gig.findByIdAndUpdate(req.body.gigId, { $inc: { orders: 1 } });
