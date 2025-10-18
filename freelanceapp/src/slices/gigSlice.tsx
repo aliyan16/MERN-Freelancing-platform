@@ -8,7 +8,7 @@ export const fetchSellerGigs=createAsyncThunk('gigs/fetchSellerGigs',async(_,{re
     try{
         const res=await api.get('/gigs')
         return res.data as Gig[]
-    }catch(e){
+    }catch(err){
         return rejectWithValue(e.response?.data || 'failed to fetch gigs')
     }
 })

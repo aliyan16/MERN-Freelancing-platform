@@ -2,6 +2,7 @@ import express from 'express';
 import Order from '../models/order';
 import { containerClient,sharedKeyCredentials, uploadToAzure } from '../../utilities/azureUploads';
 import { generateBlobSASQueryParameters,BlobSASPermissions } from '@azure/storage-blob';
+import Gig from '../models/gig';
 
 
 
@@ -38,6 +39,7 @@ router.post('/',async(req,res)=>{
             blobName=await uploadToAzure(req.body.reqImg)
         }
         const newOrder=new Order({buyer:req.body.buyerId,seller:req.body.sellerId,gig:req.body.gigId,requirements:req.body.orderReq,image:blobName,price:req.body.price})
+        await Gig.findByIdAndUpdate(req.body.gigId, { $inc: { orders: 1 } });
         await newOrder.save()
         res.status(201).json({
             ...newOrder,
