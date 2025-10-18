@@ -2,6 +2,7 @@ import { Request,Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/user";
+import redisClient from "../../utilities/redisClient";
 
 
 
@@ -24,6 +25,7 @@ const registerUser=async(req:Request,res:Response)=>{
             role
         });
         const token=jwt.sign({id:user._id},process.env.JWT_SECRET as string,{expiresIn:"1h"});
+        await redisClient.setEx(`jwt_${user._id}`,3600,token)
 
         res.json({
             user:{id:user._id,name:`${user.firstName} ${user.lastName}`,role:user.role},
@@ -45,7 +47,8 @@ const loginUser=async(req:Request,res:Response)=>{
         if(!isMatch){
             return res.status(400).json({message:"Invalid credentials"})
         }
-        const token=jwt.sign({id:user._id},process.env.JWT_SECRET as string,{expiresIn:'2d'})
+        const token=jwt.sign({id:user._id},process.env.JWT_SECRET as string,{expiresIn:'1h'})
+        await redisClient.setEx(`jwt_${user._id}`,3600,token)
         res.json({
             user:{id:user._id,name:`${user.firstName} ${user.lastName}`,role:user.role},
             token
@@ -54,5 +57,8 @@ const loginUser=async(req:Request,res:Response)=>{
         res.status(500).json({message:"Error while logging in"})
     }
 }
-
-export { registerUser, loginUser }
+const logoutUser=async(req:Request,res:Response)=>{
+    await redisClient.del(`jwt_${(req as any).userId}`);
+    res.json({message:'Logged out successfully'})
+}
+export { registerUser, loginUser, logoutUser }
