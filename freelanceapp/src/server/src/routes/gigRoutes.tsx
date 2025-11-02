@@ -80,21 +80,24 @@ router.get('/',async(req,res)=>{
     }
     const gigs=await Gig.find().sort({createdAt:-1})
     console.log("Number of gigs in DB:", gigs.length);
-    const gigsWithUrls=gigs.map(async (gig)=>{
-      let imageUrl:string|null=null
-      if(gig.image){
-        imageUrl= await generateSASUrl(gig.image)
-        // console.log('Generated imageUrl before return :',imageUrl)
-      }
-      return{
-        ...gig.toObject(),
-        imageUrl
-      }
+    const gigsWithUrls = await Promise.all(
+      gigs.map(async (gig) => {
+        let imageUrl = null;
+        if (gig.image) {
+          imageUrl = await generateSASUrl(gig.image);
+        }
+        return {
+          ...gig.toObject(),
+          imageUrl,
+        };
+      })
+  );
 
-    })
-    await redisClient.setEx("gigs_all", 600, JSON.stringify(gigsWithUrls));
-    console.log("💾 Cache set for gigs list");
-    res.json(gigsWithUrls)
+  // cache the resolved array
+  await redisClient.setEx("gigs_all", 600, JSON.stringify(gigsWithUrls));
+  console.log("💾 Cache set for gigs list");
+  res.json(gigsWithUrls);
+
   }catch(e){
     console.error(e)
     res.status(500).json({error:e})

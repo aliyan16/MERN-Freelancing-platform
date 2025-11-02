@@ -10,8 +10,13 @@ function GigsPage() {
   const { list, loading } = useSelector((state: RootState) => state.gigs);
 
   useEffect(() => {
-    dispatch(fetchSellerGigs());
-  }, [dispatch]);
+  const loadGigs = async () => {
+    const result = await dispatch(fetchSellerGigs());
+    console.log("Fetched gigs:", result);
+  };
+  loadGigs();
+}, [dispatch]);
+
 
   if (loading) return <div className="p-6">Loading gigs...</div>;
 
