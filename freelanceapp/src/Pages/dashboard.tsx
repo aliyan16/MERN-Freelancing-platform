@@ -58,7 +58,7 @@ function Dashboard() {
         <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {loading && <p className="text-gray-500">Loading gigs...</p>}
           {!loading &&
-            list.map((gig) => (
+            list.filter(gig=>gig.status==='active').map((gig) => (
               <div
                 key={gig._id}
                 className="bg-white/80 backdrop-blur-sm border border-gray-200 rounded-2xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden"
