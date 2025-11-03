@@ -73,13 +73,20 @@ router.post('/',upload.single('image'),async(req,res)=>{
 
 router.get('/',async(req,res)=>{
   try{
+    const page=parseInt(req.query.page as string)||1
+    const limit=parseInt(req.query.limit as string)||10
+    const skip=(page-1)*limit
     // Check cache
-    const cachedGigs = await redisClient.get("gigs_all");
+    const cacheKey=`gig_page_${page}_limit${limit}`;
+    const cachedGigs = await redisClient.get(cacheKey);
     if (cachedGigs) {
       console.log("🧠 Cache hit for gigs list");
       return res.json(JSON.parse(cachedGigs));
     }
-    const gigs=await Gig.find().sort({createdAt:-1})
+    
+    const gigs=await Gig.find().sort({createdAt:-1}).skip(skip).limit(limit)
+    const total=await Gig.countDocuments()
+    const totalPages=Math.ceil(total/limit)
     console.log("Number of gigs in DB:", gigs.length);
     const gigsWithUrls = await Promise.all(
       gigs.map(async (gig) => {
@@ -93,11 +100,20 @@ router.get('/',async(req,res)=>{
         };
       })
   );
+  const responseData = {
+    gigs:gigsWithUrls,
+    pagination: {
+      total,
+      page,
+      limit,
+      totalPages
+    }
+  };
 
   // cache the resolved array
-  await redisClient.setEx("gigs_all", 600, JSON.stringify(gigsWithUrls));
+  await redisClient.setEx(cacheKey, 600, JSON.stringify(responseData));
   console.log("💾 Cache set for gigs list");
-  res.json(gigsWithUrls);
+  res.json(responseData);
 
   }catch(e){
     console.error(e)

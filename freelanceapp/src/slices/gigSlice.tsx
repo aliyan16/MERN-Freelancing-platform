@@ -4,10 +4,19 @@ import axios from "axios";
 const api=axios.create({
     baseURL:'http://localhost:5000/api'
 })
+interface GigsResponse{
+    gigs:Gig[];
+    pagination:{
+        total:number;
+        page:number;
+        limit:number;
+        totalPages:number;
+    }
+}
 export const fetchSellerGigs=createAsyncThunk('gigs/fetchSellerGigs',async(_,{rejectWithValue})=>{
     try{
-        const res=await api.get('/gigs')
-        return res.data as Gig[]
+        const res=await api.get('/gigs?page=1&limit=10')
+        return res.data as GigsResponse
     }catch(e:any){
         return rejectWithValue(e.response?.data || 'failed to fetch gigs')
     }
