@@ -1,6 +1,6 @@
 import express from "express"
 import multer from "multer"
-import { uploadToAzure,containerClient,sharedKeyCredentials, blobServiceClient } from "../../utilities/azureUploads"
+import { uploadToAzure,containerClient,sharedKeyCredentials, blobServiceClient,deleteFromAzure } from "../../utilities/azureUploads"
 import Gig from "../models/gig"
 import {  generateBlobSASQueryParameters,BlobSASPermissions } from "@azure/storage-blob"
 const upload=multer({storage:multer.memoryStorage()})
@@ -40,6 +40,7 @@ async function generateSASUrl(blobName: string): Promise<string> {
 
   return sasUrl;
 }
+
 
 
 router.post('/',upload.single('image'),async(req,res)=>{
@@ -167,6 +168,9 @@ router.delete('/:id', async (req, res) => {
   try {
     const gig = await Gig.findByIdAndDelete(req.params.id);
     if (!gig) return res.status(404).json({ error: 'Gig not found' });
+    if(gig.image){
+      await deleteFromAzure(gig.image);
+    }
 
     // clear cache
     await redisClient.del("gigs_all");

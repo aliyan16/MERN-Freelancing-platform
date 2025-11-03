@@ -13,7 +13,7 @@ export interface IGig extends Document {
   clicks: number;
   orders: number;
   cancellations: number;
-  status:string;
+  status: "active" | "paused" | "pending" | "draft" | "denied";
 }
 
 const GigSchema: Schema = new Schema(

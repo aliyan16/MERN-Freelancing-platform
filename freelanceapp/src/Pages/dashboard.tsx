@@ -75,6 +75,10 @@ function Dashboard() {
                   <h3 className="text-lg font-bold text-gray-900 mb-2 truncate">
                     {gig.title}
                   </h3>
+                  <div className=" justify-between text-sm text-gray-600">
+                    <p><span className="font-semibold">Description:</span> <br/> <span>{gig.description || "No description available"}</span></p>
+                    <p><span className="font-semibold">Delivery:</span> <br/> <span>{gig.deliveryTime || 0} days</span></p>
+                  </div>
                   <div className="flex items-center">
                     <p className="text-emerald-600 font-extrabold text-lg">
                       ${gig.price}

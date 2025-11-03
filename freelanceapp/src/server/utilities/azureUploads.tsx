@@ -19,3 +19,19 @@ export const uploadToAzure=async(file:Express.Multer.File): Promise<string>=>{
     return blobName
 
 }
+
+export async function deleteFromAzure(blobName: string) {
+  try {
+    const blobClient = containerClient.getBlobClient(blobName);
+
+    const exists = await blobClient.exists();
+    if (exists) {
+      await blobClient.delete();
+      console.log(`🗑️ Deleted blob from Azure: ${blobName}`);
+    } else {
+      console.log(`⚠️ Blob not found in Azure: ${blobName}`);
+    }
+  } catch (err: any) {
+    console.error("Error deleting blob:", err.message);
+  }
+}

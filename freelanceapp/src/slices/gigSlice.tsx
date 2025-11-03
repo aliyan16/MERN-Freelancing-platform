@@ -65,6 +65,7 @@ interface Gig{
     orders:number;
     cancellations:number;
     imageUrl?:string;
+    status:"active" | "paused" | "pending" | "draft" | "denied";
 }
 interface GigSlice{
     list:Gig[];

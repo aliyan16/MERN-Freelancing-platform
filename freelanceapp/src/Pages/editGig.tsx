@@ -14,6 +14,7 @@ function EditGigPage() {
     title: "",
     description: "",
     price: "",
+    deliveryTime: "",
     image: null as File | null,
   });
 
@@ -30,6 +31,7 @@ function EditGigPage() {
         title: gig.title || "",
         description: gig.description || "",
         price: gig.price?.toString() || "",
+        deliveryTime: gig.deliveryTime || "",
         image: null,
       });
     }
@@ -92,6 +94,16 @@ function EditGigPage() {
             onChange={handleChange}
             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"
           />
+        </div>
+        <div>
+            <label className="block text-gray-700 mb-1">Delivery</label>
+            <input
+              type="text"
+              name="delivery"
+              value={formData.deliveryTime}
+              onChange={handleChange}
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-emerald-500 outline-none"
+            />
         </div>
 
         <div>

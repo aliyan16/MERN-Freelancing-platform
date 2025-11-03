@@ -47,7 +47,9 @@ const handleDelete = (gigId: string) => {
 };
 
 
-
+const getCount=(status:string)=>{
+  return list.length && list.filter(gig=>gig.status===status).length
+}
   if (loading) return <div className="p-6">Loading gigs...</div>;
 
   return (
@@ -67,17 +69,18 @@ const handleDelete = (gigId: string) => {
     {/* Tabs */}
     <div className="flex gap-8 border-b pb-3 mb-6 text-gray-600 font-medium text-lg">
       <button className="text-emerald-600 border-b-2 border-emerald-600 pb-2">
-        Active ({list.length})
+        Active ({getCount('active')})
       </button>
-      <button className="hover:text-emerald-600">Pending</button>
-      <button className="hover:text-emerald-600">Draft</button>
-      <button className="hover:text-emerald-600">Paused</button>
-      <button className="hover:text-emerald-600">Denied</button>
+      <button className="hover:text-emerald-600">Pending ({getCount('pending')})</button>
+      <button className="hover:text-emerald-600">Draft ({getCount('draft')})</button>
+      <button className="hover:text-emerald-600">Paused ({getCount('paused')})</button>
+      <button className="hover:text-emerald-600">Denied ({getCount('denied')})</button>
     </div>
 
     {/* Gig Cards */}
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
       {list.map((gig) => (
+        
         <div
           key={gig._id}
           className="bg-white rounded-2xl shadow-md border border-gray-200 hover:shadow-xl transition duration-300 relative"
@@ -94,7 +97,15 @@ const handleDelete = (gigId: string) => {
             <h3 className="text-lg font-bold text-gray-900 truncate">
               {gig.title}
             </h3>
+            <div>
+              <p className="text-gray-700 text-sm line-clamp-2">{gig.description}</p>
+            </div>
             <div className="flex justify-between text-sm text-gray-600">
+              <p>Price: <span className="font-semibold">{gig.price || 0}</span></p>
+              <p>Delivery: <span className="font-semibold">{gig.deliveryTime || 0} days</span></p>
+            </div>
+            <div className="flex justify-between text-sm text-gray-600">
+              
               <p>Orders: <span className="font-semibold">{gig.orders || 0}</span></p>
               <p className="text-red-500">Cancellations: {gig.cancellations ? `${gig.cancellations}%` : "0%"}</p>
             </div>
