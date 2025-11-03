@@ -34,17 +34,23 @@ export const updateGig = createAsyncThunk(
     try {
       const formData = new FormData();
       for (const key in data) {
-        if (data[key] !== null) formData.append(key, data[key]);
+        if (data[key] !== null && data[key] !== undefined) {
+          formData.append(key, data[key]);
+        }
       }
-      const response = await axios.put(`/api/gigs/${id}`, formData, {
+
+      const response = await api.put(`/gigs/${id}`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
+
       return response.data;
     } catch (err: any) {
       return rejectWithValue(err.response?.data || "Failed to update gig");
     }
   }
 );
+
+
 
 interface Gig{
     _id:string;

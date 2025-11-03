@@ -1,6 +1,6 @@
 import express from "express"
 import multer from "multer"
-import { uploadToAzure,containerClient,sharedKeyCredentials } from "../../utilities/azureUploads"
+import { uploadToAzure,containerClient,sharedKeyCredentials, blobServiceClient } from "../../utilities/azureUploads"
 import Gig from "../models/gig"
 import {  generateBlobSASQueryParameters,BlobSASPermissions } from "@azure/storage-blob"
 const upload=multer({storage:multer.memoryStorage()})
@@ -128,20 +128,41 @@ router.get('/:id',async(req,res)=>{
     res.status(500).json({error:e})
   }
 })
-router.put('/:id', async (req, res) => {
+router.put('/:id', upload.single('image'), async (req, res) => {
   try {
-    const updatedGig = await Gig.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!updatedGig) return res.status(404).json({ error: 'Gig not found' });
+    let blobName = '';
+    if (req.file) {
+      blobName = await uploadToAzure(req.file);
+    }
 
-    await redisClient.del("gigs_all"); // invalidate cache
-    await redisClient.del(`gig_${req.params.id}`); // invalidate single gig cache
+    const updatedGig = await Gig.findByIdAndUpdate(
+      req.params.id,
+      {
+        ...req.body,
+        ...(blobName && { image: blobName }), // only update image if new uploaded
+      },
+      { new: true }
+    );
 
-    res.json(updatedGig);
-  } catch (e:any) {
+    if (!updatedGig) {
+      return res.status(404).json({ error: 'Gig not found' });
+    }
+
+    await redisClient.del("gigs_all");
+    await redisClient.del(`gig_${req.params.id}`);
+
+    res.json({
+      ...updatedGig.toObject(),
+      imageUrl: blobName
+        ? await generateSASUrl(blobName)
+        : await generateSASUrl(updatedGig.image),
+    });
+  } catch (e) {
     console.error(e);
     res.status(500).json({ e });
   }
 });
+
 router.delete('/:id', async (req, res) => {
   try {
     const gig = await Gig.findByIdAndDelete(req.params.id);
