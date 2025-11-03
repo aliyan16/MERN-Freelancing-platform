@@ -137,9 +137,9 @@ router.put('/:id', async (req, res) => {
     await redisClient.del(`gig_${req.params.id}`); // invalidate single gig cache
 
     res.json(updatedGig);
-  } catch (e) {
+  } catch (e:any) {
     console.error(e);
-    res.status(500).json({ error: e.message });
+    res.status(500).json({ e });
   }
 });
 router.delete('/:id', async (req, res) => {
@@ -152,7 +152,7 @@ router.delete('/:id', async (req, res) => {
     await redisClient.del(`gig_${req.params.id}`);
 
     res.json({ message: 'Gig deleted successfully' });
-  } catch (e) {
+  } catch (e:any) {
     console.error(e);
     res.status(500).json({ error: e.message });
   }
@@ -169,7 +169,7 @@ router.patch('/:id/pause', async (req, res) => {
     await redisClient.del(`gig_${req.params.id}`);
 
     res.json(gig);
-  } catch (e) {
+  } catch (e:any) {
     console.error(e);
     res.status(500).json({ error: e.message });
   }

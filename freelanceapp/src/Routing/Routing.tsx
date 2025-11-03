@@ -14,6 +14,7 @@ import Order from "../Pages/order";
 import { RootState } from "../appstore/store";
 import Header from "../components/header";
 import OrderHistory from "../Pages/orderHistory";
+import EditGigPage from "../Pages/editGig";
 function Routing(){
     const token=useSelector((state:RootState)=>state.auth.token)
     const isAuthenticated=Boolean(token)
@@ -28,6 +29,7 @@ function Routing(){
                 <Route path="/create-gig" element={<PrivateRoute><><Header/> <CreateGig /></></PrivateRoute>} />
                 <Route path="/gigs/:id" element={<PrivateRoute><><Header/> <Order /></></PrivateRoute>} />
                 <Route path="/orders" element={<PrivateRoute><><Header/><OrderHistory/></></PrivateRoute>} />
+                <Route path="/edit-gig/:id" element={<PrivateRoute><EditGigPage /></PrivateRoute>} />
             </Routes>
     )
 }

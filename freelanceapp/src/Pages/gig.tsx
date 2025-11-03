@@ -80,7 +80,7 @@ const handleDelete = (gigId: string) => {
       {list.map((gig) => (
         <div
           key={gig._id}
-          className="bg-white rounded-2xl shadow-md border border-gray-200 hover:shadow-xl transition duration-300 overflow-hidden"
+          className="bg-white rounded-2xl shadow-md border border-gray-200 hover:shadow-xl transition duration-300 relative"
         >
           {/* Image */}
           <img

@@ -28,14 +28,24 @@ export const pauseGig=createAsyncThunk('gigs/pauseGig',async(id:string,{rejectWi
         return rejectWithValue(e.response?.data || 'failed to pause gig')
     }
 })
-export const updateGig=createAsyncThunk('gigs/updateGig',async({id,data}:{id:string;data:Partial<Gig>},{rejectWithValue})=>{
-    try{
-        const res=await api.put(`/gigs/${id}`,data)
-        return res.data
-    }catch(e:any){
-        return rejectWithValue(e.response?.data || 'failed to update gig')
+export const updateGig = createAsyncThunk(
+  "gigs/updateGig",
+  async ({ id, data }: { id: string; data: any }, { rejectWithValue }) => {
+    try {
+      const formData = new FormData();
+      for (const key in data) {
+        if (data[key] !== null) formData.append(key, data[key]);
+      }
+      const response = await axios.put(`/api/gigs/${id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      return response.data;
+    } catch (err: any) {
+      return rejectWithValue(err.response?.data || "Failed to update gig");
     }
-})
+  }
+);
+
 interface Gig{
     _id:string;
     title:string;
