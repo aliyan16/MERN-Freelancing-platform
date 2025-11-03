@@ -13,6 +13,7 @@ export interface IGig extends Document {
   clicks: number;
   orders: number;
   cancellations: number;
+  status:string;
 }
 
 const GigSchema: Schema = new Schema(
@@ -29,6 +30,7 @@ const GigSchema: Schema = new Schema(
     clicks: { type: Number, default: 0 },
     orders: { type: Number, default: 0 },
     cancellations: { type: Number, default: 0 },
+    status:{type:String,enum:['active','paused'],default:'active'}
   },
   { timestamps: true }
 );

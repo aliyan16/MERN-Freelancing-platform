@@ -8,8 +8,32 @@ export const fetchSellerGigs=createAsyncThunk('gigs/fetchSellerGigs',async(_,{re
     try{
         const res=await api.get('/gigs')
         return res.data as Gig[]
-    }catch(err){
+    }catch(e:any){
         return rejectWithValue(e.response?.data || 'failed to fetch gigs')
+    }
+})
+export const deleteGig=createAsyncThunk('gigs/deleteGig',async(id:string,{rejectWithValue})=>{
+    try{
+        await api.delete(`/gigs/${id}`)
+        return id
+    }catch(e:any){
+        return rejectWithValue(e.response?.data || 'failed to delete gig')
+    }
+})
+export const pauseGig=createAsyncThunk('gigs/pauseGig',async(id:string,{rejectWithValue})=>{
+    try{
+        const res=await api.patch(`/gigs/${id}/pause`)
+        return res.data
+    }catch(e:any){
+        return rejectWithValue(e.response?.data || 'failed to pause gig')
+    }
+})
+export const updateGig=createAsyncThunk('gigs/updateGig',async({id,data}:{id:string;data:Partial<Gig>},{rejectWithValue})=>{
+    try{
+        const res=await api.put(`/gigs/${id}`,data)
+        return res.data
+    }catch(e:any){
+        return rejectWithValue(e.response?.data || 'failed to update gig')
     }
 })
 interface Gig{

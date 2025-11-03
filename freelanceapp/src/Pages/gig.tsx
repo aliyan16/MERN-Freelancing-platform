@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSellerGigs } from "../slices/gigSlice";
 import { RootState, AppDispatch } from "../appstore/store";
@@ -8,6 +8,7 @@ function GigsPage() {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const { list, loading } = useSelector((state: RootState) => state.gigs);
+  const [openMenu,setOpenMenu]=useState<string | null>(null)
 
   useEffect(() => {
   const loadGigs = async () => {
@@ -16,6 +17,26 @@ function GigsPage() {
   };
   loadGigs();
 }, [dispatch]);
+useEffect(()=>{
+  const closeMenu=(e:MouseEvent)=>{
+    const target=e.target as HTMLElement
+    if(!target.closest('.gig-menu')) setOpenMenu(null)
+  }
+  document.addEventListener('click',closeMenu)
+  return ()=>document.removeEventListener('click',closeMenu)
+},[])
+const handleToggleMenu=(gigId:string)=>{
+  setOpenMenu(openMenu===gigId?null:gigId)
+}
+const handleEdit=(gigId:string)=>{
+
+}
+const handlePause=(gigId:string)=>{
+
+}
+const handleDelete=(gigId:string)=>{
+
+}
 
 
   if (loading) return <div className="p-6">Loading gigs...</div>;
@@ -70,10 +91,34 @@ function GigsPage() {
             </div>
 
             {/* Actions */}
-            <div className="flex justify-end">
-              <button className="px-3 py-1 text-gray-600 hover:text-gray-900 transition">
-                ⋮
+            <div className="relative flex justify-end gig-menu">
+              <button onClick={()=> handleToggleMenu(gig._id)} className="px-3 py-1 text-gray-600 hover:text-gray-900 transition" >
+                :
+
               </button>
+              {openMenu === gig._id && (
+                <div className="absolute top-8 right-0 w-36 bg-white border border-gray-200 shadow-lg rounded-lg z-10">
+                  <button
+                    onClick={() => handleEdit(gig._id)}
+                    className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                  >
+                    ✏️ Edit
+                  </button>
+                  <button
+                    onClick={() => handlePause(gig._id)}
+                    className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                  >
+                    ⏸ Pause
+                  </button>
+                  <button
+                    onClick={() => handleDelete(gig._id)}
+                    className="block w-full text-left px-4 py-2 text-red-500 hover:bg-red-50"
+                  >
+                    🗑 Delete
+                  </button>
+                </div>
+              )}
+
             </div>
           </div>
         </div>
