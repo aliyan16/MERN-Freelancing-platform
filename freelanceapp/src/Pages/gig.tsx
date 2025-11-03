@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchSellerGigs } from "../slices/gigSlice";
 import { RootState, AppDispatch } from "../appstore/store";
 import { useNavigate } from "react-router-dom";
+import { pauseGig, deleteGig } from "../slices/gigSlice";
 
 function GigsPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -28,15 +29,23 @@ useEffect(()=>{
 const handleToggleMenu=(gigId:string)=>{
   setOpenMenu(openMenu===gigId?null:gigId)
 }
-const handleEdit=(gigId:string)=>{
 
-}
-const handlePause=(gigId:string)=>{
+const handleEdit = (gigId: string) => {
+  navigate(`/edit-gig/${gigId}`);
+};
 
-}
-const handleDelete=(gigId:string)=>{
+const handlePause = (gigId: string) => {
+  dispatch(pauseGig(gigId));
+  setOpenMenu(null);
+};
 
-}
+const handleDelete = (gigId: string) => {
+  if (window.confirm("Are you sure you want to delete this gig?")) {
+    dispatch(deleteGig(gigId));
+    setOpenMenu(null);
+  }
+};
+
 
 
   if (loading) return <div className="p-6">Loading gigs...</div>;

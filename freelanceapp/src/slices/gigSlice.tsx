@@ -80,6 +80,18 @@ const gigSlice =createSlice({
                 state.loading=false;
                 state.error=action.payload as string
             })
+            .addCase(deleteGig.fulfilled, (state, action) => {
+                state.list = state.list.filter(g => g._id !== action.payload);
+            })
+            .addCase(pauseGig.fulfilled, (state, action) => {
+                const idx = state.list.findIndex(g => g._id === action.payload._id);
+                if (idx !== -1) state.list[idx] = action.payload;
+            })
+            .addCase(updateGig.fulfilled, (state, action) => {
+                const idx = state.list.findIndex(g => g._id === action.payload._id);
+                if (idx !== -1) state.list[idx] = action.payload;
+            });
+
     }
 })
 

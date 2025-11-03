@@ -128,6 +128,54 @@ router.get('/:id',async(req,res)=>{
     res.status(500).json({error:e})
   }
 })
+router.put('/:id', async (req, res) => {
+  try {
+    const updatedGig = await Gig.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!updatedGig) return res.status(404).json({ error: 'Gig not found' });
+
+    await redisClient.del("gigs_all"); // invalidate cache
+    await redisClient.del(`gig_${req.params.id}`); // invalidate single gig cache
+
+    res.json(updatedGig);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: e.message });
+  }
+});
+router.delete('/:id', async (req, res) => {
+  try {
+    const gig = await Gig.findByIdAndDelete(req.params.id);
+    if (!gig) return res.status(404).json({ error: 'Gig not found' });
+
+    // clear cache
+    await redisClient.del("gigs_all");
+    await redisClient.del(`gig_${req.params.id}`);
+
+    res.json({ message: 'Gig deleted successfully' });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: e.message });
+  }
+});
+router.patch('/:id/pause', async (req, res) => {
+  try {
+    const gig = await Gig.findById(req.params.id);
+    if (!gig) return res.status(404).json({ error: 'Gig not found' });
+
+    gig.status = gig.status === 'paused' ? 'active' : 'paused';
+    await gig.save();
+
+    await redisClient.del("gigs_all");
+    await redisClient.del(`gig_${req.params.id}`);
+
+    res.json(gig);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: e.message });
+  }
+});
+
+
 
 
 
