@@ -30,9 +30,12 @@ const GigSchema: Schema = new Schema(
     clicks: { type: Number, default: 0 },
     orders: { type: Number, default: 0 },
     cancellations: { type: Number, default: 0 },
-    status:{type:String,enum:['active','paused'],default:'active'}
+    status:{type:String,enum:['active','paused','pending','draft','denied'],default:'active'}
   },
   { timestamps: true }
 );
+
+GigSchema.index({status:1,createdAt:-1});
+GigSchema.index({status:1,category:1,createdAt:-1});
 
 export default mongoose.model<IGig>("Gig", GigSchema);
