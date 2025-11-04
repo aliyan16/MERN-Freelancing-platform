@@ -71,6 +71,35 @@ router.post('/',upload.single('image'),async(req,res)=>{
 
 })
 
+router.get('/seller/:sellerId',async(req,res)=>{
+  try{
+    const cachedGigs=await redisClient.get(`seller_gigs_${req.params.sellerId}`);
+    if(cachedGigs){
+      console.log("🧠 Cache hit for seller gigs");
+      return res.json(JSON.parse(cachedGigs))
+    }
+    const gigs=await Gig.find({sellerId:req.params.sellerId}).sort({createdAt:-1})
+    const gigsWithUrls=await Promise.all(
+      gigs.map(async(gig)=>{
+        let ImageUrl=null
+        if(gig.image){
+          ImageUrl=await generateSASUrl(gig.image)
+        }
+        return{
+          ...gig.toObject(),
+          imageUrl:ImageUrl
+        }
+      })
+    )
+    await redisClient.setEx(`seller_gigs_${req.params.sellerId}`,600,JSON.stringify(gigsWithUrls))
+    console.log("💾 Cache set for seller gigs")
+    res.json(gigsWithUrls);
+  }catch(e){
+    console.error(e)
+    res.status(500).json({error:e})
+  }
+})
+
 router.get('/',async(req,res)=>{
   try{
     const page=parseInt(req.query.page as string)||1

@@ -2,7 +2,7 @@ import React, { useEffect,useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../appstore/store";
 import { Link } from "react-router-dom";
-import { fetchSellerGigs } from "../slices/gigSlice";
+import { fetchAllGigs } from "../slices/gigSlice";
 import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
@@ -15,7 +15,7 @@ function Dashboard() {
 
   useEffect(() => {
     if (!fetched.current) {
-      dispatch(fetchSellerGigs());
+      dispatch(fetchAllGigs());
       fetched.current = true;
     }
   }, [dispatch]);

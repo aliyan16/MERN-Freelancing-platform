@@ -1,6 +1,6 @@
 import axios from "axios";
-import React, { useState, useEffect,useRef, ReactHTMLElement } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import React, { useState, useEffect,useRef } from "react";
+import { useParams } from "react-router-dom";
 import { placeOrder } from "../slices/orderSlice";
 import { AppDispatch,RootState } from "../appstore/store";
 import {useSelector,useDispatch} from 'react-redux'

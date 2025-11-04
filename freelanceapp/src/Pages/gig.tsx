@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSellerGigs, pauseGig, deleteGig } from "../slices/gigSlice";
 import { RootState, AppDispatch } from "../appstore/store";
@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 function GigsPage() {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+  const sellerId = useSelector((state: RootState) => state.auth.user?.id);
   const { list, loading } = useSelector((state: RootState) => state.gigs);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [selectedStatus, setSelectedStatus] = useState<
@@ -14,7 +15,10 @@ function GigsPage() {
   >("active");
 
   useEffect(() => {
-    dispatch(fetchSellerGigs());
+    
+    if (sellerId) {
+      dispatch(fetchSellerGigs(sellerId));
+    }
   }, [dispatch]);
 
   useEffect(() => {
