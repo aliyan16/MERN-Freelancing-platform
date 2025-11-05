@@ -48,7 +48,7 @@ function Header() {
           to="/dashboard"
           className="text-2xl font-extrabold text-white tracking-wide hover:opacity-90 transition"
         >
-          Freelancing<span className="text-yellow-300">App</span>
+          Work<span className="text-yellow-300">ify</span>
         </Link>
       </div>
 
@@ -61,7 +61,7 @@ function Header() {
           Dashboard
         </Link>
 
-        {user && (
+        {user?.id && (
           <div className="relative" ref={menuRef}>
             <button
               onClick={() => setIsMenuOpen((prev) => !prev)}
@@ -103,31 +103,33 @@ function Header() {
       </div>
 
       {/* Right Section - User Dropdown */}
-      <div className="relative" ref={userRef}>
-        <button
-          onClick={() => setIsUserOpen((prev) => !prev)}
-          className="px-4 py-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition"
-        >
-          {user?.name || "User"} ▾
-        </button>
+      {user?.id && (
+        <div className="relative" ref={userRef}>
+          <button
+            onClick={() => setIsUserOpen((prev) => !prev)}
+            className="px-4 py-2 rounded-full bg-white/10 text-white hover:bg-white/20 transition"
+          >
+            {user?.name || "User"} ▾
+          </button>
 
-        {isUserOpen && (
-          <div className="absolute right-0 mt-3 bg-white shadow-xl rounded-lg w-44 z-50 overflow-hidden">
-            <Link
-              to="/settings"
-              className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-            >
-              Settings
-            </Link>
-            <button
-              onClick={handleLogout}
-              className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
-            >
-              Logout
-            </button>
-          </div>
-        )}
-      </div>
+          {isUserOpen && (
+            <div className="absolute right-0 mt-3 bg-white shadow-xl rounded-lg w-44 z-50 overflow-hidden">
+              <Link
+                to="/settings"
+                className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+              >
+                Settings
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+              >
+                Logout
+              </button>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   </header>
 

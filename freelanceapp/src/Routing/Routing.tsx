@@ -15,6 +15,7 @@ import Order from "../Pages/order";
 import Header from "../components/header";
 import OrderHistory from "../Pages/orderHistory";
 import EditGigPage from "../Pages/editGig";
+import Footer from "../components/footer";
 function Routing(){
     // const token=useSelector((state:RootState)=>state.auth.token)
     // const isAuthenticated=Boolean(token)
@@ -22,14 +23,14 @@ function Routing(){
             <Routes>
                 <Route path="/auth/login" element={<SignIn />} />
                 <Route path="/auth/register" element={<Register />} />
-                <Route path="/onboarding" element={ <PrivateRoute><><Header/> <Onboarding /></></PrivateRoute>} />
-                <Route path="/dashboard" element={<PrivateRoute><><Header/> <Dashboard/></></PrivateRoute>}/>
-                <Route path="/gigs" element={<PrivateRoute><><Header/> <GigsPage /></></PrivateRoute>} />
-                <Route path="/profile/:id" element={<PrivateRoute><><Header/> <Profile /></></PrivateRoute>} />
-                <Route path="/create-gig" element={<PrivateRoute><><Header/> <CreateGig /></></PrivateRoute>} />
-                <Route path="/gigs/:id" element={<PrivateRoute><><Header/> <Order /></></PrivateRoute>} />
-                <Route path="/orders" element={<PrivateRoute><><Header/><OrderHistory/></></PrivateRoute>} />
-                <Route path="/edit-gig/:id" element={<PrivateRoute><EditGigPage /></PrivateRoute>} />
+                <Route path="/" element={<><Header/> <Onboarding /><Footer/></>} />
+                <Route path="/dashboard" element={<PrivateRoute><><Header/> <Dashboard/><Footer/></></PrivateRoute>}/>
+                <Route path="/gigs" element={<PrivateRoute><><Header/> <GigsPage /><Footer/></></PrivateRoute>} />
+                <Route path="/profile/:id" element={<PrivateRoute><><Header/> <Profile /><Footer/></></PrivateRoute>} />
+                <Route path="/create-gig" element={<PrivateRoute><><Header/> <CreateGig /><Footer/></></PrivateRoute>} />
+                <Route path="/gigs/:id" element={<PrivateRoute><><Header/> <Order /><Footer/></></PrivateRoute>} />
+                <Route path="/orders" element={<PrivateRoute><><Header/><OrderHistory/><Footer/></></PrivateRoute>} />
+                <Route path="/edit-gig/:id" element={<PrivateRoute><><Header/><EditGigPage /><Footer/></></PrivateRoute>} />
             </Routes>
     )
 }
