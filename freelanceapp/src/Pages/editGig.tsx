@@ -8,6 +8,7 @@ function EditGigPage() {
   const { id } = useParams<{ id: string }>();
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+  const sellerId=useSelector((state:RootState)=>state.auth.user?.id)
   const { list } = useSelector((state: RootState) => state.gigs);
 
   const [formData, setFormData] = useState({
@@ -20,7 +21,7 @@ function EditGigPage() {
 
   useEffect(() => {
     if (list.length === 0) {
-      dispatch(fetchSellerGigs());
+      dispatch(fetchSellerGigs(sellerId!));
     }
   }, [dispatch, list.length]);
 

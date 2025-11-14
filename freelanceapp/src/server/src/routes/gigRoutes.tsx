@@ -59,6 +59,8 @@ router.post('/',upload.single('image'),async(req,res)=>{
       image:blobName
     })
     await newGig.save()
+    await redisClient.del(`seller_gigs_${req.body.sellerId}`);
+
     await redisClient.del("gigs_all"); // Invalidate gigs list cache
     res.status(201).json({
       ...newGig.toObject(),
@@ -196,6 +198,8 @@ router.put('/:id', upload.single('image'), async (req, res) => {
 
     await redisClient.del("gigs_all");
     await redisClient.del(`gig_${req.params.id}`);
+    await redisClient.del(`seller_gigs_${updatedGig.sellerId}`);
+
 
     res.json({
       ...updatedGig.toObject(),
@@ -220,6 +224,8 @@ router.delete('/:id', async (req, res) => {
     // clear cache
     await redisClient.del("gigs_all");
     await redisClient.del(`gig_${req.params.id}`);
+    await redisClient.del(`seller_gigs_${gig.sellerId}`);
+
 
     res.json({ message: 'Gig deleted successfully' });
   } catch (e:any) {
@@ -245,94 +251,6 @@ router.patch('/:id/pause', async (req, res) => {
   }
 });
 
-
-
-
-
-// router.post('/',upload.single('image'),async(req,res)=>{
-//   try{
-//     let blobName=''
-//     if(req.file){
-//       blobName=await uploadToAzure(req.file)
-//     }
-//     const newGig=new Gig({
-//       title:req.body.title,
-//       description:req.body.description,
-//       price:req.body.price,
-//       category:req.body.category,
-//       deliveryTime:req.body.deliveryTime,
-//       image:blobName
-//     })
-//     await newGig.save()
-//     res.status(201).json(newGig)
-//   }catch(e){
-//     res.status(500).json({error:e})
-//   }
-// })
-
-// router.get('/',async(req,res)=>{
-//   try{
-//     const gigs=await Gig.find().sort({createdAt:-1})
-//     const gigsWithUrls=gigs.map((gig)=>{
-//       let imageUrl=null
-//       if(gig.image){
-//         const blockBlobClient=containerClient.getBlockBlobClient(gig.image)
-//         const expireOn=new Date(new Date().valueOf()+60*60*1000)
-//         const sasToken=generateBlobSASQueryParameters(
-//           {
-//             containerName:containerClient.containerName,
-//             blobName:gig.image,
-//             permissions:BlobSASPermissions.parse('r'),
-//             startsOn:new Date(),
-//             expiresOn:expireOn
-//           },
-//           sharedKeyCredentials
-//         ).toString()
-//         imageUrl=`${blockBlobClient.url}?${sasToken}`
-//       }
-//       return{
-//         ...gig.toObject(),
-//         imageUrl,
-//       }
-//     })
-//     res.json(gigsWithUrls)
-//   }catch(e){
-//     console.error(e)
-//     res.status(500).json({message:'Error fetching gigs'})
-//   }
-// })
-
-
-
-// router.post('/',upload.single('image'),async(req,res)=>{
-//     try{
-//         let imageUrl=''
-//         if(req.file){
-//             imageUrl=await uploadToAzure(req.file)
-//         }
-//         const newGig=new Gig({
-//             title:req.body.title,
-//             description:req.body.description,
-//             price:req.body.price,
-//             category:req.body.category,
-//             deliveryTime:req.body.deliveryTime,
-//             image:imageUrl
-//         })
-//         await newGig.save();
-//         res.status(201).json(newGig)
-//     }catch(e){
-//         res.status(500).json({error:e})
-//     }
-// })
-
-// router.get("/", async (req, res) => {
-//   try {
-//     const gigs = await Gig.find().sort({ createdAt: -1 });
-//     res.json(gigs);
-//   } catch (err) {
-//     res.status(500).json({ message: "Error fetching gigs" });
-//   }
-// });
 
 
 export default router

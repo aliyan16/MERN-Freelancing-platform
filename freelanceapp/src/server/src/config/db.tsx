@@ -11,10 +11,7 @@ const connectDB=async()=>{
             throw new Error("MongoDB connection string is missing!");
         }
 
-        await mongoose.connect(process.env.MONGO_URL, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        } as mongoose.ConnectOptions);
+        await mongoose.connect(process.env.MONGO_URL);
         console.log('Mongo connected')
     }catch(e){
 
