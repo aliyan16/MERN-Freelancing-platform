@@ -12,7 +12,7 @@ import { Document,Schema } from 'mongoose'
 //     gender:string,
 //     role:string,
 // }
-const Schema=mongoose.Schema
+// const Schema=mongoose.Schema
 
 
 const userSchema=new Schema(
@@ -43,4 +43,4 @@ userSchema.virtual('sales',{
     foreignField:'seller'
 })
 
-export default mongoose.model<IUser>('User', userSchema)
+export default mongoose.model('User', userSchema)

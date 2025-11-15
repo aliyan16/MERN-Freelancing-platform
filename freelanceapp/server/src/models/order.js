@@ -11,7 +11,7 @@ import mongoose,{Document,Schema} from "mongoose";
 //     createdAt:Date;
 //     updatedAt:Date;
 // }
-const Schema= mongoose.Schema;
+// const Schema= mongoose.Schema;
 
 const orderSchema=new Schema(
     {
@@ -28,4 +28,4 @@ const orderSchema=new Schema(
     {timestamps:true}
 )
 
-export default mongoose.model<IOrder>('Order',orderSchema)
+export default mongoose.model('Order',orderSchema)

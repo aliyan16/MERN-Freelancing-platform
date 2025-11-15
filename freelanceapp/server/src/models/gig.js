@@ -15,7 +15,7 @@ import mongoose, { Schema, Document } from "mongoose";
 //   cancellations: number;
 //   status: "active" | "paused" | "pending" | "draft" | "denied";
 // }
-const Schema=mongoose.Schema;
+// const Schema=mongoose.Schema;
 
 const GigSchema= new Schema(
   {
@@ -39,4 +39,4 @@ const GigSchema= new Schema(
 GigSchema.index({status:1,createdAt:-1});
 GigSchema.index({status:1,category:1,createdAt:-1});
 
-export default mongoose.model<IGig>("Gig", GigSchema);
+export default mongoose.model("Gig", GigSchema);
