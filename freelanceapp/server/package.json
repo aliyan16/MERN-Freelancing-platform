@@ -27,6 +27,6 @@
     "typescript": "^5.9.3"
   },
   "scripts": {
-    "dev": "nodemon src/index.js"
+    "start": "node src/index.js"
   }
 }
