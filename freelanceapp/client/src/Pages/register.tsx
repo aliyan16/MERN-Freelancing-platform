@@ -4,6 +4,8 @@ import { useDispatch } from "react-redux";
 import { login } from "../slices/authSlice";
 import { useNavigate, Link } from "react-router-dom";
 
+declare const process: { env?: { REACT_APP_BACKEND_URL?: string } } | undefined;
+
 function Register() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -28,7 +30,7 @@ function Register() {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:5000/api/auth/register",
+        `${process?.env?.REACT_APP_BACKEND_URL}/api/auth/register`,
         RegisterData
       );
       dispatch(login(data));

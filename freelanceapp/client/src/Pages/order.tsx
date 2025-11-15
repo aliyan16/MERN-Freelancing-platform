@@ -15,6 +15,7 @@ interface Gig {
   category: string;
   deliveryTime: number;
 }
+declare const process: { env?: { REACT_APP_BACKEND_URL?: string } } | undefined;
 
 function Order() {
   const { id } = useParams<{ id: string }>();
@@ -35,7 +36,7 @@ function Order() {
     if(!fetched.current){
       const fetchGig = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/gigs/${id}`);
+        const res = await axios.get(`${process?.env?.REACT_APP_BACKEND_URL}/api/gigs/${id}`);
         setGig(res.data);
       } catch (e) {
         console.error("Error fetching gig:", e);

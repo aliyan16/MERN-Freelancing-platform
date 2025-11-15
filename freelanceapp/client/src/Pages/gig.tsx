@@ -47,7 +47,7 @@ function GigsPage() {
   };
 
   const getCount = (status: string) =>
-    list.filter((gig) => gig.status === status).length;
+    list.filter((gig:any) => gig.status === status).length;
 
   if (loading) return <div className="p-6">Loading gigs...</div>;
 
@@ -90,8 +90,8 @@ function GigsPage() {
         {/* Gig Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
           {list
-            .filter((gig) => gig.status === selectedStatus)
-            .map((gig) => (
+            .filter((gig:any) => gig.status === selectedStatus)
+            .map((gig:any) => (
               <div
                 key={gig._id}
                 className="bg-white rounded-2xl shadow-md border border-gray-200 hover:shadow-xl transition duration-300 relative"

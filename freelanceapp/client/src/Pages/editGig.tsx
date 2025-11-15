@@ -26,7 +26,7 @@ function EditGigPage() {
   }, [dispatch, list.length]);
 
   useEffect(() => {
-    const gig = list.find((g) => g._id === id);
+    const gig = list.find((g:any) => g._id === id);
     if (gig) {
       setFormData({
         title: gig.title || "",

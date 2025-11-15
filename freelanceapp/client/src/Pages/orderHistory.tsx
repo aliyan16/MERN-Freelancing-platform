@@ -41,7 +41,7 @@ function OrderHistory() {
                 : "You haven’t purchased anything yet."}
             </p>
             ) : (
-            orders.map((order) => (
+            orders.map((order:any) => (
                 <div
                 key={order._id}
                 className="p-6 bg-white rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 flex justify-between items-start"

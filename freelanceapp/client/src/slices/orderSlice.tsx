@@ -1,7 +1,9 @@
 import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const baseUrl='http://localhost:5000/api'
+// declare const process: { env?: { BACKEND_URL?: string } } | undefined;
+
+const baseUrl=`${process.env.REACT_APP_BACKEND_URL}/api`
 
 interface UserRef {
   _id: string;
@@ -48,9 +50,9 @@ export const placeOrder=createAsyncThunk('orders/placeOrder',async(orderData:{bu
         const res=await axios.post(`${baseUrl}/orders`,{buyerId:orderData.buyerId,sellerId:orderData.sellerId,gigId:orderData.gigId,orderReq:orderData.orderReq,reqImg:orderData.reqImg,price:orderData.price})
         return res.data
 
-    }catch(e){
+    }catch(e:any){
         console.error('Failed to place order',e)
-        return rejectWithValue(e.response?.data || "Failed to place order");
+        return rejectWithValue(e.response.data || "Failed to place order");
     }
 })
 

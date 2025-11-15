@@ -4,6 +4,9 @@ import { useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { login } from "../slices/authSlice";
 
+
+// declare const process: { env?: { BACKEND_URL?: string } } | undefined;
+
 function SignIn() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -12,6 +15,7 @@ function SignIn() {
     password: "",
   });
 
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setSignInData((prev) => ({ ...prev, [name]: value }));
@@ -21,7 +25,7 @@ function SignIn() {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        `${process.env.REACT_APP_BACKEND_URL}/api/auth/login`,
         signInData
       );
       dispatch(login(data));

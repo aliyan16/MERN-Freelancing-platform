@@ -1,8 +1,11 @@
 import { createSlice,createAsyncThunk,PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
+// declare const process: { env?: { REACT_APP_BACKEND_URL?: string } } | undefined;
+
 
 const api=axios.create({
-    baseURL:'http://localhost:5000/api'
+    baseURL: `${process.env.REACT_APP_BACKEND_URL}/api`,
+
 })
 interface GigsResponse{
     gigs:Gig[];

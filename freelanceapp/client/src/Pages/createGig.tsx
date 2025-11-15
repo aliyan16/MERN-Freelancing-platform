@@ -5,9 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../appstore/store";
 
+declare const process: { env?: { BACKEND_URL?: string } } | undefined;
+
 function CreateGig() {
   const navigate = useNavigate();
   const user=useSelector((state:RootState)=>state.auth.user)
+  const API_URL = process?.env?.BACKEND_URL ?? "";
+
   const [gigData, setGigData] = useState({
     sellerId: "",
     title: "",
@@ -46,7 +50,7 @@ function CreateGig() {
     if (gigData.image) formData.append("image", gigData.image);
 
     try {
-      await axios.post("http://localhost:5000/api/gigs", formData, {
+      await axios.post(`${API_URL}/api/gigs`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       navigate("/gigs");

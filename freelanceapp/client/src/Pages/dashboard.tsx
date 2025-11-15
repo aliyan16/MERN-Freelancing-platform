@@ -24,18 +24,18 @@ const Dashboard: React.FC = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    setFilteredGigs(list.filter((gig) => gig.status === "active"));
+    setFilteredGigs(list.filter((gig:any) => gig.status === "active"));
   }, [list]);
 
   const handleFilter = (category: string) => {
     if (!category) {
-      setFilteredGigs(list.filter((gig) => gig.status === "active"));
+      setFilteredGigs(list.filter((gig:any) => gig.status === "active"));
     } else {
-      setFilteredGigs(list.filter((gig) => gig.category === category && gig.status === "active"));
+      setFilteredGigs(list.filter((gig:any) => gig.category === category && gig.status === "active"));
     }
   };
 
-  const categories = Array.from(new Set(list.map((g) => g.category)));
+  const categories = Array.from(new Set(list.map((g:any) => g.category)));
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 p-8">

@@ -1,54 +1,28 @@
 {
-  "name": "freelanceapp",
-  "version": "0.1.0",
+  "name": "freelanceapp-client",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@azure/storage-blob": "^12.28.0",
-    "@reduxjs/toolkit": "^2.8.2",
-    "@testing-library/dom": "^10.4.1",
-    "@testing-library/jest-dom": "^6.6.4",
-    "@testing-library/react": "^16.3.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2",
-    "@types/jsonwebtoken": "^9.0.10",
-    "@types/react": "^19.1.10",
-    "@types/react-dom": "^19.1.7",
-    "autoprefixer": "^10.4.21",
-    "axios": "^1.11.0",
-    "bcryptjs": "^3.0.2",
-    "cors": "^2.8.5",
-    "dotenv": "^17.2.1",
-    "express": "^5.1.0",
-    "express-mongo-sanitize": "^2.2.0",
-    "express-rate-limit": "^8.2.1",
-    "helmet": "^8.1.0",
-    "jsonwebtoken": "^9.0.2",
-    "lucide-react": "^0.552.0",
-    "mongoose": "^8.17.1",
-    "multer": "^2.0.2",
-    "postcss": "^8.5.6",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
-    "react-hook-form": "^7.62.0",
+    "@reduxjs/toolkit": "^2.10.1",
+    "axios": "^1.13.2",
+    "lucide-react": "^0.553.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-redux": "^9.2.0",
-    "react-router-dom": "^7.8.0",
-    "react-scripts": "5.0.1",
-    "redis": "^5.8.3",
-    "web-vitals": "^2.1.4",
-    "zod": "^4.0.17"
+    "react-router-dom": "^7.9.6",
+    "react-scripts": "5.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.25",
+    "@types/react": "^18.3.26",
+    "@types/react-dom": "^18.3.7",
+    "typescript": "4.9.5"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "dev": "nodemon --exec ts-node src/server/src/index.tsx"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "eject": "react-scripts eject"
   },
   "browserslist": {
     "production": [
@@ -61,15 +35,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@types/cors": "^2.8.19",
-    "@types/express": "^4.17.23",
-    "@types/multer": "^2.0.0",
-    "@types/node": "^24.3.0",
-    "nodemon": "^3.1.10",
-    "ts-node": "^10.9.2",
-    "tsx": "^4.20.4",
-    "typescript": "^5.9.2"
   }
 }

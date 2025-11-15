@@ -1,6 +1,8 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+  
+declare const process: { env?: { REACT_APP_BACKEND_URL?: string } } | undefined;
 
 function Profile() {
     const {id}=useParams()
@@ -8,7 +10,7 @@ function Profile() {
 
     useEffect(()=>{
         const fetchProfile=async()=>{
-            const {data}=await axios.get(`http://localhost:5000/api/users/${id}`)
+            const {data}=await axios.get(`${process?.env?.REACT_APP_BACKEND_URL}/api/users/${id}`)
             setProfile(data)
         }
         fetchProfile()
